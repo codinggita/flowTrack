@@ -2,6 +2,13 @@
 
 A modern React application built with Vite, featuring Material UI components and Tailwind CSS for styling.
 
+## Features
+
+- **Authentication**: JWT-based email/password login and centered Google Social Login.
+- **Branding**: Custom FlowTrack water-drop favicon and UI logo.
+- **Modern UI**: Dark-themed terminal aesthetic using MUI and Tailwind CSS.
+- **Form Management**: Robust form handling with Formik and Yup validation.
+
 ## Tech Stack
 
 - **React 19.2.5** - UI library
