@@ -95,7 +95,7 @@ FlowTrack detects recurring charges and shows upcoming renewals with a **7-day w
 
 | Layer | Technology |
 |-------|------------|
-| Frontend | React 19 + Vite + JSX |
+| Frontend | React 19 + Vite + JSX + TailwindCSS + MUI  |
 | Styling | Tailwind CSS + shadcn/ui |
 | Charts | Recharts |
 | Backend | Node.js + Express |
