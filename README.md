@@ -107,6 +107,12 @@ FlowTrack detects recurring charges and shows upcoming renewals with a **7-day w
 Everything used is **100% free tier** — no paid services required to run or deploy.
 
 ---
+## 🎨 Design & Prototype
+
+Explore the UI/UX design and interactive prototype below:
+
+* 🔗 [Figma Design](https://www.figma.com/design/drhC7vDVlQUDH97dLY1XoT/Untitled?node-id=0-1&t=5bhMn4Wi6TsHoY4d-1)
+* 🚀 [Figma Prototype](https://www.figma.com/proto/drhC7vDVlQUDH97dLY1XoT/Untitled?node-id=2-286&viewport=-2915%2C157%2C0.36&t=JxkcVty4PfyYElJ2-1&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=2%3A348&page-id=0%3A1)
 
 ## 🎯 Who Is This For?
 
