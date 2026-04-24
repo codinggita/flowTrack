@@ -31,7 +31,7 @@ export default function LoginPage() {
   });
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-6 md:p-10 relative overflow-hidden font-body noise-overlay">
+    <div className="min-h-screen flex flex-col items-center justify-center p-6 md:p-10 relative overflow-hidden noise-overlay">
       {/* Animated Background Elements */}
       <div className="absolute top-[10%] left-[10%] w-64 h-64 bg-primary/8 rounded-full blur-3xl animate-morph"></div>
       <div className="absolute bottom-[10%] right-[10%] w-80 h-80 bg-accent-purple/6 rounded-full blur-3xl animate-morph" style={{ animationDelay: '2s' }}></div>
@@ -45,21 +45,21 @@ export default function LoginPage() {
       <div className="absolute bottom-[15%] left-[45%] w-2 h-2 bg-accent-blue rounded-full opacity-20 animate-pulse-glow stagger-5"></div>
 
       {/* Top Branding */}
-      <div className="relative z-10 flex flex-col items-center mb-8 animate-fade-in-up text-center">
-        <div className="w-16 h-16 bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/30 rounded-2xl flex items-center justify-center shadow-glow mb-4">
+      <div className="relative z-10 flex flex-col items-center mb-10 animate-fade-in-up text-center">
+        <div className="w-16 h-16 bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/30 rounded-2xl flex items-center justify-center shadow-glow mb-5">
           <span className="material-symbols-outlined text-3xl text-primary icon-fill">water_drop</span>
         </div>
-        <h1 className="text-4xl font-headline font-extrabold gradient-text tracking-tight mb-2">FlowTrack</h1>
-        <h2 className="text-2xl font-headline font-bold text-on-surface tracking-tight mb-2">Welcome back</h2>
-        <p className="text-body-md text-on-surface-variant max-w-[400px]">Enter your credentials to access your dashboard and take control of your finances.</p>
+        <h1 className="text-4xl font-bold gradient-text tracking-tight mb-3">FlowTrack</h1>
+        <h2 className="text-2xl font-semibold text-on-surface tracking-tight mb-3">Welcome back</h2>
+        <p className="text-base text-on-surface-variant max-w-[420px] leading-relaxed">Enter your credentials to access your dashboard and take control of your finances.</p>
       </div>
 
       {/* Glass Card Form */}
-      <main className="w-full max-w-[440px] glass-card rounded-3xl p-8 relative z-10 animate-fade-in-up stagger-2">
-        <form className="flex flex-col gap-5" onSubmit={formik.handleSubmit} noValidate>
+      <main className="w-full max-w-[480px] glass-card rounded-3xl p-10 md:p-12 relative z-10 animate-fade-in-up stagger-2">
+        <form className="flex flex-col gap-8" onSubmit={formik.handleSubmit} noValidate>
           {/* Email Field */}
-          <div className="flex flex-col gap-1.5">
-            <label className="text-[12px] font-semibold text-on-surface-variant uppercase tracking-[0.08em] ml-0.5" htmlFor="login-email">
+          <div className="flex flex-col gap-3">
+            <label className="text-[13px] font-semibold text-on-surface-variant uppercase tracking-[0.08em] ml-0.5" htmlFor="login-email">
               Email Address
             </label>
             <div className="relative group">
@@ -85,9 +85,9 @@ export default function LoginPage() {
           </div>
 
           {/* Password Field */}
-          <div className="flex flex-col gap-1.5">
+          <div className="flex flex-col gap-3">
             <div className="flex justify-between items-center ml-0.5">
-              <label className="text-[12px] font-semibold text-on-surface-variant uppercase tracking-[0.08em]" htmlFor="login-password">
+              <label className="text-[13px] font-semibold text-on-surface-variant uppercase tracking-[0.08em]" htmlFor="login-password">
                 Password
               </label>
               <a href="#" className="text-[12px] font-semibold text-primary hover:text-primary-fixed transition-colors">
@@ -130,7 +130,7 @@ export default function LoginPage() {
           <button 
             type="submit" 
             disabled={isLoading}
-            className="w-full btn-primary mt-2 flex items-center justify-center gap-2.5 group text-[16px] disabled:opacity-70 disabled:cursor-not-allowed"
+            className="w-full btn-primary mt-4 flex items-center justify-center gap-2.5 group text-[17px] font-semibold disabled:opacity-70 disabled:cursor-not-allowed"
           >
             {isLoading ? (
               <>
@@ -150,17 +150,17 @@ export default function LoginPage() {
         </form>
 
         {/* Divider */}
-        <div className="flex items-center gap-4 my-6">
+        <div className="flex items-center gap-4 mt-8 mb-6">
           <div className="flex-1 h-px bg-gradient-to-r from-transparent via-outline-variant to-transparent" />
-          <span className="text-[11px] font-semibold text-on-surface-variant uppercase tracking-wider">Or continue with</span>
+          <span className="text-[11px] font-semibold text-on-surface-variant uppercase tracking-wider whitespace-nowrap">Or continue with</span>
           <div className="flex-1 h-px bg-gradient-to-r from-transparent via-outline-variant to-transparent" />
         </div>
 
         {/* Social Login */}
-        <div className="flex gap-3">
+        <div className="flex flex-col sm:flex-row gap-5 mb-8">
           <button 
             type="button" 
-            className="flex-1 glass border border-outline-variant/40 rounded-xl py-3.5 flex items-center justify-center gap-3 text-body-sm font-semibold hover:border-primary/30 hover:bg-surface-container-high/80 transition-all duration-300 group"
+            className="flex-1 glass border border-outline-variant/40 rounded-xl py-4 flex items-center justify-center gap-3 text-sm font-semibold hover:border-primary/30 hover:bg-surface-container-high/80 transition-all duration-300 group"
           >
             <img 
               src="https://www.svgrepo.com/show/475656/google-color.svg" 
@@ -171,7 +171,7 @@ export default function LoginPage() {
           </button>
           <button 
             type="button" 
-            className="flex-1 glass border border-outline-variant/40 rounded-xl py-3.5 flex items-center justify-center gap-3 text-body-sm font-semibold hover:border-primary/30 hover:bg-surface-container-high/80 transition-all duration-300 group"
+            className="flex-1 glass border border-outline-variant/40 rounded-xl py-4 flex items-center justify-center gap-3 text-sm font-semibold hover:border-primary/30 hover:bg-surface-container-high/80 transition-all duration-300 group"
           >
             <span className="material-symbols-outlined text-on-surface-variant group-hover:text-on-surface text-[20px] transition-colors">phone_iphone</span>
             <span className="text-on-surface-variant group-hover:text-on-surface transition-colors">Apple</span>
@@ -179,8 +179,8 @@ export default function LoginPage() {
         </div>
 
         {/* Sign Up Link */}
-        <div className="text-center mt-8">
-          <p className="text-body-sm text-on-surface-variant">
+        <div className="text-center mt-6 pt-4 border-t border-outline-variant/20">
+          <p className="text-sm text-on-surface-variant">
             Don't have an account?{' '}
             <Link 
               to="/signup" 

@@ -74,7 +74,7 @@ export default function SignUpPage() {
   });
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-6 md:p-10 relative overflow-hidden font-body noise-overlay">
+    <div className="min-h-screen flex flex-col items-center justify-center p-6 md:p-10 relative overflow-hidden noise-overlay">
       {/* Animated Background Elements */}
       <div className="absolute top-[10%] right-[10%] w-64 h-64 bg-accent-purple/8 rounded-full blur-3xl animate-morph"></div>
       <div className="absolute bottom-[10%] left-[10%] w-80 h-80 bg-primary/6 rounded-full blur-3xl animate-morph" style={{ animationDelay: '2s' }}></div>
@@ -87,21 +87,21 @@ export default function SignUpPage() {
       <div className="absolute top-[70%] left-[40%] w-1.5 h-1.5 bg-accent-blue rounded-full opacity-30 animate-pulse-glow stagger-5"></div>
 
       {/* Top Branding */}
-      <div className="relative z-10 flex flex-col items-center mb-8 animate-fade-in-up text-center">
-        <div className="w-16 h-16 bg-gradient-to-br from-primary/20 to-accent-purple/10 border border-primary/30 rounded-2xl flex items-center justify-center shadow-glow mb-4">
+      <div className="relative z-10 flex flex-col items-center mb-10 animate-fade-in-up text-center">
+        <div className="w-16 h-16 bg-gradient-to-br from-primary/20 to-accent-purple/10 border border-primary/30 rounded-2xl flex items-center justify-center shadow-glow mb-5">
           <span className="material-symbols-outlined text-3xl text-primary icon-fill">person_add</span>
         </div>
-        <h1 className="text-4xl font-headline font-extrabold gradient-text tracking-tight mb-2">FlowTrack</h1>
-        <h2 className="text-2xl font-headline font-bold text-on-surface tracking-tight mb-2">Create account</h2>
-        <p className="text-body-md text-on-surface-variant max-w-[400px]">Join thousands of Indians who've taken control of their money with smart tracking.</p>
+        <h1 className="text-4xl font-bold gradient-text tracking-tight mb-3">FlowTrack</h1>
+        <h2 className="text-2xl font-semibold text-on-surface tracking-tight mb-3">Create account</h2>
+        <p className="text-base text-on-surface-variant max-w-[420px] leading-relaxed">Join thousands of Indians who've taken control of their money with smart tracking.</p>
       </div>
 
       {/* Glass Card Form */}
-      <main className="w-full max-w-[440px] glass-card rounded-3xl p-8 relative z-10 animate-fade-in-up stagger-2">
-        <form className="flex flex-col gap-4.5" onSubmit={formik.handleSubmit} noValidate>
+      <main className="w-full max-w-[480px] glass-card rounded-3xl p-10 md:p-12 relative z-10 animate-fade-in-up stagger-2">
+        <form className="flex flex-col gap-8" onSubmit={formik.handleSubmit} noValidate>
           {/* Full Name Field */}
-          <div className="flex flex-col gap-1.5">
-            <label className="text-[12px] font-semibold text-on-surface-variant uppercase tracking-[0.08em] ml-0.5" htmlFor="signup-fullName">
+          <div className="flex flex-col gap-3">
+            <label className="text-[13px] font-semibold text-on-surface-variant uppercase tracking-[0.08em] ml-0.5" htmlFor="signup-fullName">
               Full Name
             </label>
             <div className="relative group">
@@ -127,8 +127,8 @@ export default function SignUpPage() {
           </div>
 
           {/* Email Field */}
-          <div className="flex flex-col gap-1.5">
-            <label className="text-[12px] font-semibold text-on-surface-variant uppercase tracking-[0.08em] ml-0.5" htmlFor="signup-email">
+          <div className="flex flex-col gap-3">
+            <label className="text-[13px] font-semibold text-on-surface-variant uppercase tracking-[0.08em] ml-0.5" htmlFor="signup-email">
               Email Address
             </label>
             <div className="relative group">
@@ -154,8 +154,8 @@ export default function SignUpPage() {
           </div>
 
           {/* Password Field */}
-          <div className="flex flex-col gap-1.5">
-            <label className="text-[12px] font-semibold text-on-surface-variant uppercase tracking-[0.08em] ml-0.5" htmlFor="signup-password">
+          <div className="flex flex-col gap-3">
+            <label className="text-[13px] font-semibold text-on-surface-variant uppercase tracking-[0.08em] ml-0.5" htmlFor="signup-password">
               Password
             </label>
             <div className="relative group">
@@ -192,7 +192,7 @@ export default function SignUpPage() {
           </div>
 
           {/* Terms Checkbox */}
-          <div className="mt-1">
+          <div className="mt-2">
             <div className="flex items-start gap-3">
               <div className="relative mt-0.5">
                 <input
@@ -212,7 +212,7 @@ export default function SignUpPage() {
                   <span className="material-symbols-outlined text-[14px] text-on-primary opacity-0 peer-checked:opacity-100 transition-opacity">check</span>
                 </label>
               </div>
-              <label className="text-body-sm text-on-surface-variant leading-relaxed cursor-pointer" htmlFor="signup-terms">
+              <label className="text-sm text-on-surface-variant leading-relaxed cursor-pointer" htmlFor="signup-terms">
                 I agree to the{' '}
                 <a href="#" className="text-primary hover:underline font-semibold">Terms of Service</a>
                 {' '}and{' '}
@@ -231,7 +231,7 @@ export default function SignUpPage() {
           <button 
             type="submit" 
             disabled={isLoading}
-            className="w-full btn-primary mt-1 flex items-center justify-center gap-2.5 group text-[16px] disabled:opacity-70 disabled:cursor-not-allowed"
+            className="w-full btn-primary mt-4 flex items-center justify-center gap-2.5 group text-[17px] font-semibold disabled:opacity-70 disabled:cursor-not-allowed"
           >
             {isLoading ? (
               <>
@@ -251,17 +251,17 @@ export default function SignUpPage() {
         </form>
 
         {/* Divider */}
-        <div className="flex items-center gap-4 my-5">
+        <div className="flex items-center gap-4 mt-8 mb-6">
           <div className="flex-1 h-px bg-gradient-to-r from-transparent via-outline-variant to-transparent" />
-          <span className="text-[11px] font-semibold text-on-surface-variant uppercase tracking-wider">Or sign up with</span>
+          <span className="text-[11px] font-semibold text-on-surface-variant uppercase tracking-wider whitespace-nowrap">Or sign up with</span>
           <div className="flex-1 h-px bg-gradient-to-r from-transparent via-outline-variant to-transparent" />
         </div>
 
         {/* Social Login */}
-        <div className="flex gap-3">
+        <div className="flex flex-col sm:flex-row gap-5 mb-8">
           <button 
             type="button" 
-            className="flex-1 glass border border-outline-variant/40 rounded-xl py-3.5 flex items-center justify-center gap-3 text-body-sm font-semibold hover:border-primary/30 hover:bg-surface-container-high/80 transition-all duration-300 group"
+            className="flex-1 glass border border-outline-variant/40 rounded-xl py-4 flex items-center justify-center gap-3 text-sm font-semibold hover:border-primary/30 hover:bg-surface-container-high/80 transition-all duration-300 group"
           >
             <img 
               src="https://www.svgrepo.com/show/475656/google-color.svg" 
@@ -272,7 +272,7 @@ export default function SignUpPage() {
           </button>
           <button 
             type="button" 
-            className="flex-1 glass border border-outline-variant/40 rounded-xl py-3.5 flex items-center justify-center gap-3 text-body-sm font-semibold hover:border-primary/30 hover:bg-surface-container-high/80 transition-all duration-300 group"
+            className="flex-1 glass border border-outline-variant/40 rounded-xl py-4 flex items-center justify-center gap-3 text-sm font-semibold hover:border-primary/30 hover:bg-surface-container-high/80 transition-all duration-300 group"
           >
             <span className="material-symbols-outlined text-on-surface-variant group-hover:text-on-surface text-[20px] transition-colors">phone_iphone</span>
             <span className="text-on-surface-variant group-hover:text-on-surface transition-colors">Apple</span>
@@ -280,8 +280,8 @@ export default function SignUpPage() {
         </div>
 
         {/* Login Link */}
-        <div className="text-center mt-7">
-          <p className="text-body-sm text-on-surface-variant">
+        <div className="text-center mt-6 pt-4 border-t border-outline-variant/20">
+          <p className="text-sm text-on-surface-variant">
             Already have an account?{' '}
             <Link 
               to="/login" 

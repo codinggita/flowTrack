@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
 /* ── FlowTrack Ultra-Premium Finance Design System (Tailwind CSS v4) ── */
 @theme {
@@ -79,16 +78,16 @@
   --spacing-base: 4px;
   --spacing-md: 16px;
 
-  /* Typography – Premium Font Stack */
+  /* Typography – Clean Professional Fonts */
   --font-headline: "Outfit", system-ui, sans-serif;
   --font-body: "Plus Jakarta Sans", system-ui, sans-serif;
-  --font-mono: "Space Grotesk", monospace;
+  --font-mono: "JetBrains Mono", monospace;
 
-  /* Display Text */
-  --text-display-currency: 38px;
-  --text-display-currency--line-height: 46px;
-  --text-display-currency--letter-spacing: -0.03em;
-  --text-display-currency--font-weight: 700;
+  /* Display Text - Clean Currency Display */
+  --text-display-currency: 36px;
+  --text-display-currency--line-height: 44px;
+  --text-display-currency--letter-spacing: -0.02em;
+  --text-display-currency--font-weight: 600;
 
   /* Headlines */
   --text-headline-lg: 30px;
@@ -454,7 +453,7 @@ body::before {
   color: #001a12;
   font-family: 'Outfit', system-ui, sans-serif;
   font-weight: 700;
-  padding: 14px 28px;
+  padding: 16px 32px;
   border-radius: 14px;
   border: none;
   cursor: pointer;
@@ -493,7 +492,7 @@ body::before {
   background: rgba(10, 16, 20, 0.8);
   border: 1px solid rgba(84, 102, 120, 0.25);
   border-radius: 14px;
-  padding: 14px 18px 14px 48px;
+  padding: 16px 20px 16px 52px;
   color: #e4ecf4;
   font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
   font-size: 15px;
