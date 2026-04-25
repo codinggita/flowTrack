@@ -1,93 +1,37 @@
 
 # 💸 FlowTrack
 
-> **One dashboard for all your money** — UPI apps, cards, wallets, bank accounts & subscriptions in plain Hindi/English language.
+> **One dashboard for all your money** — UPI apps, cards, wallets, bank accounts & subscriptions in a premium, high-fidelity interface.
 
 ---
 
-## 🔍 Problem Statement
+## 🔍 Overview
 
-**Why do people struggle to track where their money goes each month?**
+FlowTrack is a **personal finance dashboard** built specifically for the Indian payment ecosystem. It brings all your money activity into one place with a focus on **visual excellence**, **smooth interactions**, and **data clarity**.
 
-Most Indians use 4–7 different payment apps — GPay, PhonePe, Paytm, credit cards, bank accounts, and cash — but none of them talk to each other. At the end of the month, there's no single place to see the full picture. People end up confused, overspending unknowingly, and missing subscription renewals — simply because their financial data is scattered everywhere.
-
----
-
-## 💡 The Idea
-
-FlowTrack is a **personal finance dashboard** built specifically for the Indian payment ecosystem. It brings all your money activity into one place and explains it back to you in plain, simple language — like having a financially aware friend who tells you:
-
-> *"You spent ₹8,450 on food & beverages this month (mostly Swiggy & local dhabas)."*
-
-No jargon. No 7 separate apps. Just clarity.
+The application follows a strict **"Triple-Black" tonal design aesthetic**—prioritizing depth through layering rather than shadows, using vibrant green accents, and featuring high-performance custom SVG visualizations.
 
 ---
 
-## 🧠 How It Works
+## ✨ Features Implemented
 
-### 1. Connect Your Accounts
-Add your UPI apps (GPay, PhonePe), bank accounts, credit/debit cards, wallets, or cash accounts manually. Each account is tracked independently and shown on a unified dashboard.
-
-### 2. Import Your Transactions
-- **Manual entry** — add transactions one by one via a simple form
-- **CSV Upload** — import directly from GPay, PhonePe, or bank statement exports
-
-### 3. Auto-Categorization
-FlowTrack reads transaction names and auto-assigns categories using a keyword-based rule engine (`categoryMap.js`):
-
-| Keyword Match | Category |
-|---------------|----------|
-| Swiggy, Zomato, Dhaba | 🍔 Food & Drinks |
-| Uber, Ola, Metro | 🚗 Transport |
-| Netflix, Spotify, Hotstar | 📺 Subscriptions |
-| Amazon, Flipkart, Myntra | 🛍️ Shopping |
-| Apollo, Practo, Chemist | 💊 Health |
-
-### 4. Dashboard & Insights
-The dashboard gives you a full monthly overview:
-- **Plain-language summary** of where your money went
-- **Pie chart** — spending split by category
-- **Bar chart** — daily or weekly spending trend
-- **Recent transactions** — last 10 entries at a glance
-- **Income vs Expense vs Net Savings** — monthly report
-
-### 5. Subscription Tracker
-FlowTrack detects recurring charges and shows upcoming renewals with a **7-day warning** so you're never caught off guard.
-
----
-
-## 📸 Pages Overview
-
-| Page | What It Does |
-|------|--------------|
-| 🏠 **Dashboard** | Monthly summary, charts, recent transactions, plain-language insight |
-| 💸 **Transactions** | Full transaction list, filter by month/category, manual add |
-| 🏦 **Accounts** | Manage GPay, PhonePe, Cards, Bank accounts, Cash |
-| 📅 **Reports** | Month-wise breakdown, income vs expense, category table |
-| 🔁 **Recurring** | Subscription tracker with 7-day renewal warnings |
-
----
-
-## ✅ What We Are Building (Phase 1 — MVP)
-
-- 🔐 **User Auth** — Signup / Login with JWT (dark theme by default)
-- 🏦 **Multi-Account Support** — UPI, Bank, Card, Wallet, Cash
-- 💸 **Manual Transaction Entry** — simple add-transaction form
-- 📂 **CSV Import** — from GPay / PhonePe / Bank exports
-- 🤖 **Auto-Categorization** — keyword-based rule engine
-- 📊 **Dashboard** — summary sentence + pie chart + bar chart + recent list
-- 📅 **Monthly Reports** — income, expense & net savings view
-- 🔁 **Recurring Tracker** — subscriptions with renewal alerts
-
----
-
-## 🚀 What Comes Next (Phase 2)
-
-- 📢 Budget alerts — warn when you hit 85% of monthly limit
-- 🧠 Smart Insight Cards — *"42% more on transport than last month"*
-- 📄 Export monthly report as PDF
-- 📱 Full mobile responsive + PWA support
-- 🤖 Gemini API integration for smarter AI categorization
+- 🎨 **Premium UI/UX**: Custom "Triple-Black" tonal theme with glassmorphism and modern typography (Manrope & Inter).
+- 📊 **Custom Data Visualizations**: 
+    - **Animated Area Charts**: High-performance SVG paths with cubic-bezier transitions.
+    - **Donut Charts**: Dynamic stroke-dasharray animations for category breakdowns.
+    - **Interactive Progress Bars**: Tiered spending indicators for merchants.
+- 🔐 **Advanced Authentication**: Fully functional Login and Registration pages with **Formik** + **Yup** validation, icon-prefixed inputs, and password toggles.
+- 🏦 **Comprehensive Dashboard**:
+    - **KPI Cards**: Real-time snapshots of Net Worth, Monthly Budget, and Savings.
+    - **Monthly Trend**: Interactive spending trends over time.
+    - **Recent Activity**: High-density transaction logs.
+- 📂 **Feature Modules**:
+    - **Transactions**: Advanced filtering, categorization, and paginated data tables.
+    - **Accounts**: Unified view of UPI apps, Bank accounts, and Credit cards.
+    - **Reports**: Depth-first analysis of income vs. expenses and merchant-specific trends.
+    - **Recurring**: Subscription management with renewal countdowns and real brand logos (Netflix, Spotify, etc.).
+    - **Settings**: Complete user profile controls, security toggles, and session monitoring.
+- 🚀 **Performance**: Staggered entrance animations and optimized React 19 rendering.
 
 ---
 
@@ -95,28 +39,50 @@ FlowTrack detects recurring charges and shows upcoming renewals with a **7-day w
 
 | Layer | Technology |
 |-------|------------|
-| Frontend | React 19 + Vite + JSX + TailwindCSS + MUI  |
-| Styling | Tailwind CSS + shadcn/ui |
-| Charts | Recharts |
-| Backend | Node.js + Express |
-| Database | MongoDB Atlas (Free 512MB) |
-| Auth | JWT + bcrypt |
-| Frontend Deploy | Vercel |
-| Backend Deploy | Render |
-
-Everything used is **100% free tier** — no paid services required to run or deploy.
+| **Core** | React 19 + Vite |
+| **Styling** | Tailwind CSS v4 + Vanilla CSS |
+| **UI Components** | Material UI (MUI) 9 |
+| **Charts** | Custom Inline SVG + CSS Animations (No external chart libraries) |
+| **Forms** | Formik + Yup |
+| **Routing** | React Router 7 |
 
 ---
-## 🎨 Design & Prototype
 
-Explore the UI/UX design and interactive prototype below:
+## 📸 Pages Overview
+
+| Page | Route | Description |
+|------|-------|-------------|
+| 🏠 **Dashboard** | `/dashboard` | Monthly summary, trend charts, and quick-action KPIs. |
+| 💸 **Transactions** | `/transactions` | Filterable list of all activity with category management. |
+| 🏦 **Accounts** | `/accounts` | Manage GPay, PhonePe, Cards, and Bank accounts. |
+| 📈 **Reports** | `/reports` | Deep-dive trends and merchant spending progress. |
+| 🔁 **Recurring** | `/recurring` | Subscription tracker with real brand branding. |
+| ⚙️ **Settings** | `/settings` | User profile, security settings, and notifications. |
+| 🔐 **Auth** | `/login`, `/signup` | Professional authentication entry points. |
+
+---
+
+## 🚀 Getting Started
+
+1. **Install Dependencies**:
+   ```bash
+   npm install
+   ```
+
+2. **Run Development Server**:
+   ```bash
+   npm run dev
+   ```
+
+3. **Open the App**:
+   Visit `http://localhost:5173` to see the dashboard.
+
+---
+
+## 🎨 Design Reference
 
 * 🔗 [Figma Design](https://www.figma.com/design/drhC7vDVlQUDH97dLY1XoT/Untitled?node-id=0-1&t=5bhMn4Wi6TsHoY4d-1)
 * 🚀 [Figma Prototype](https://www.figma.com/proto/drhC7vDVlQUDH97dLY1XoT/Untitled?node-id=2-286&viewport=-2915%2C157%2C0.36&t=JxkcVty4PfyYElJ2-1&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=2%3A348&page-id=0%3A1)
-
-## 🎯 Who Is This For?
-
-Any Indian who earns a salary, uses UPI, and wonders where their money disappears every month. FlowTrack is built for the everyday user — not accountants, not finance nerds — just regular people who want honest, simple answers about their spending.
 
 ---
 
