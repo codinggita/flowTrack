@@ -1,7 +1,10 @@
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { Link, useNavigate } from 'react-router-dom';
+import { useState, useEffect, useCallback } from 'react';
+import { useAuth } from '../hooks/useAuth';
 import Logo from '../components/ui/Logo';
+import LegalFooter from '../components/ui/LegalFooter';
 
 const loginSchema = Yup.object({
   email: Yup.string().email('Enter a valid email').required('Email is required'),
@@ -10,39 +13,87 @@ const loginSchema = Yup.object({
 
 export default function Login() {
   const navigate = useNavigate();
+  const { login, googleLogin } = useAuth();
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const formik = useFormik({
     initialValues: { email: '', password: '' },
     validationSchema: loginSchema,
-    onSubmit: () => {
-      navigate('/dashboard');
+    onSubmit: async (values) => {
+      setError('');
+      setLoading(true);
+      try {
+        await login(values);
+        navigate('/dashboard');
+      } catch (err) {
+        setError(err.message || 'Login failed');
+      } finally {
+        setLoading(false);
+      }
     },
   });
 
+  // Google Sign-In setup
+  const handleGoogleCallback = useCallback(async (response) => {
+    setError('');
+    setLoading(true);
+    try {
+      await googleLogin(response.credential);
+      navigate('/dashboard');
+    } catch (err) {
+      setError(err.message || 'Google login failed');
+    } finally {
+      setLoading(false);
+    }
+  }, [googleLogin, navigate]);
+
+  useEffect(() => {
+    const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+    if (!clientId || clientId === 'your_google_client_id') return;
+
+    const script = document.createElement('script');
+    script.src = 'https://accounts.google.com/gsi/client';
+    script.async = true;
+    script.defer = true;
+    script.onload = () => {
+      window.google?.accounts.id.initialize({
+        client_id: clientId,
+        callback: handleGoogleCallback,
+      });
+      window.google?.accounts.id.renderButton(
+        document.getElementById('google-signin-btn'),
+        { theme: 'filled_black', size: 'large', width: '100%', text: 'signin_with', shape: 'rectangular' }
+      );
+    };
+    document.head.appendChild(script);
+    return () => { document.head.removeChild(script); };
+  }, [handleGoogleCallback]);
+
+  const handleGoogleClick = () => {
+    const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+    if (!clientId || clientId === 'your_google_client_id') {
+      setError('Google Sign-In is not configured. Set VITE_GOOGLE_CLIENT_ID in .env');
+      return;
+    }
+    // If GSI library loaded, prompt
+    if (window.google?.accounts?.id) {
+      window.google.accounts.id.prompt();
+    }
+  };
+
   return (
-    <div
-      style={{
-        minHeight: '100vh',
-        background: 'var(--bg)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        position: 'relative',
-        overflow: 'hidden',
-      }}
-    >
+    <div style={{
+      minHeight: '100vh', background: 'var(--bg)',
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      position: 'relative', overflow: 'hidden',
+    }}>
       {/* Radial glow */}
-      <div
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          background: 'radial-gradient(ellipse 600px 400px at 50% 40%, rgba(66,229,176,0.05) 0%, transparent 70%)',
-          pointerEvents: 'none',
-        }}
-      />
+      <div style={{
+        position: 'absolute', inset: 0,
+        background: 'radial-gradient(ellipse 600px 400px at 50% 40%, rgba(66,229,176,0.05) 0%, transparent 70%)',
+        pointerEvents: 'none',
+      }} />
 
       <div className="card anim-scale-in" style={{ maxWidth: '480px', width: '100%', padding: '40px', position: 'relative' }}>
         {/* Logo */}
@@ -50,66 +101,52 @@ export default function Login() {
           <div className="anim-logo-pop" style={{ marginBottom: '16px' }}>
             <Logo size={42} />
           </div>
-          <h1
-            style={{
-              fontFamily: 'var(--font-display)',
-              fontWeight: 700,
-              fontSize: '32px',
-              color: 'var(--green)',
-              marginBottom: '4px',
-            }}
-          >
+          <h1 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '32px', color: 'var(--green)', marginBottom: '4px' }}>
             FlowTrack
           </h1>
           <p style={{ fontSize: '14px', color: 'var(--muted)' }}>Terminal Authentication</p>
         </div>
 
+        {error && (
+          <div className="anim-fade-up" style={{
+            background: 'rgba(255,77,77,0.08)', border: '1px solid rgba(255,77,77,0.3)',
+            borderRadius: 8, padding: '10px 14px', marginBottom: 20, color: 'var(--red)', fontSize: 13,
+          }}>
+            {error}
+          </div>
+        )}
+
         <form onSubmit={formik.handleSubmit}>
-          {/* Email */}
           <div className="anim-fade-up delay-1" style={{ marginBottom: '20px' }}>
             <label className="label-text">Email Address</label>
-            <input
-              type="email"
-              name="email"
-              placeholder="name@domain.com"
-              className="input-field"
-              value={formik.values.email}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            />
+            <input type="email" name="email" placeholder="name@domain.com" className="input-field"
+              value={formik.values.email} onChange={formik.handleChange} onBlur={formik.handleBlur} />
             {formik.touched.email && formik.errors.email && (
               <p style={{ color: 'var(--red)', fontSize: '11px', marginTop: '4px' }}>{formik.errors.email}</p>
             )}
           </div>
 
-          {/* Password */}
           <div className="anim-fade-up delay-2" style={{ marginBottom: '24px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <label className="label-text">Password</label>
-              <span style={{ color: 'var(--green)', fontSize: '12px', cursor: 'pointer', fontWeight: 500 }}>Forgot?</span>
+              <Link to="/forgot-password" style={{ color: 'var(--green)', fontSize: '12px', textDecoration: 'none', fontWeight: 500 }}>Forgot?</Link>
             </div>
-            <input
-              type="password"
-              name="password"
-              placeholder="••••••••"
-              className="input-field"
-              value={formik.values.password}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            />
+            <input type="password" name="password" placeholder="••••••••" className="input-field"
+              value={formik.values.password} onChange={formik.handleChange} onBlur={formik.handleBlur} />
             {formik.touched.password && formik.errors.password && (
               <p style={{ color: 'var(--red)', fontSize: '11px', marginTop: '4px' }}>{formik.errors.password}</p>
             )}
           </div>
 
-          {/* Submit */}
           <div className="anim-fade-up delay-3">
-            <button
-              type="submit"
-              className="btn-primary"
-              style={{ width: '100%', height: '44px', fontSize: '15px' }}
-            >
-              Initialize Session
+            <button type="submit" className="btn-primary" disabled={loading}
+              style={{ width: '100%', height: '44px', fontSize: '15px' }}>
+              {loading ? (
+                <>
+                  <div className="spinner spinner-sm" style={{ borderTopColor: '#003828' }}></div>
+                  Authenticating...
+                </>
+              ) : 'Initialize Session'}
             </button>
           </div>
 
@@ -120,14 +157,9 @@ export default function Login() {
             <div style={{ flex: 1, height: '1px', background: 'var(--border)' }} />
           </div>
 
-          {/* Social buttons */}
-          <div className="anim-fade-up delay-5" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-            <button type="button" className="btn-ghost" style={{ height: '42px', fontSize: '14px' }}>
-              <span style={{ fontSize: '18px', fontWeight: 700 }}>G</span> Google
-            </button>
-            <button type="button" className="btn-ghost" style={{ height: '42px', fontSize: '14px' }}>
-              <span style={{ fontSize: '18px' }}>🍎</span> Apple
-            </button>
+          {/* Google Sign-In */}
+          <div className="anim-fade-up delay-5" style={{ display: 'flex', justifyContent: 'center' }}>
+            <div id="google-signin-btn" />
           </div>
 
           {/* Footer */}
@@ -141,6 +173,7 @@ export default function Login() {
           </div>
         </form>
       </div>
+      <LegalFooter />
     </div>
   );
 }
