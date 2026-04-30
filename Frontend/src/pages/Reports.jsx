@@ -1,180 +1,181 @@
 import { useState } from 'react';
-import { reportStats, merchantSpending, cashFlowData, topCategories } from '../data/dummy';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { useReports } from '../hooks/useReports';
 import { formatINR, formatINRShort } from '../utils/format';
-import AreaChart from '../components/charts/AreaChart';
-import ProgressBar from '../components/charts/ProgressBar';
 
-const periodTabs = ['This Month', 'Last Month', 'This Quarter', 'YTD'];
+const PERIODS = [
+  { key:'this-month', label:'This Month' },
+  { key:'last-month', label:'Last Month' },
+  { key:'this-quarter', label:'This Quarter' },
+  { key:'ytd', label:'YTD' },
+];
+
+const CAT_ICONS = {
+  Food:'🍽️', Transport:'🚗', Shopping:'🛒', Income:'💰',
+  Housing:'🏠', Utilities:'⚡', Software:'💻', Tech:'📱',
+  Investment:'📈', Others:'📦',
+};
+
+const CashTooltip = ({ active, payload, label }) => {
+  if (!active || !payload?.length) return null;
+  return (
+    <div style={{ background:'#1a211d', border:'1px solid #3c4a43', borderRadius:8, padding:'12px 16px', minWidth:160 }}>
+      <p style={{ color:'#85948c', fontSize:11, fontWeight:600, marginBottom:8 }}>{label}</p>
+      {payload.map(p => (
+        <div key={p.dataKey} style={{ display:'flex', alignItems:'center', gap:8, marginBottom:4 }}>
+          <div style={{ width:8, height:8, borderRadius:'50%', background:p.color }} />
+          <span style={{ color:'#bbcac1', fontSize:12 }}>{p.name}:</span>
+          <span style={{ color:p.color, fontFamily:'Manrope', fontWeight:700, fontSize:13 }}>{formatINR(p.value)}</span>
+        </div>
+      ))}
+    </div>
+  );
+};
 
 export default function Reports() {
-  const [activePeriod, setActivePeriod] = useState('This Quarter');
+  const [period, setPeriod] = useState('this-month');
+  const { summary, spendingByMerchant, cashFlow, topCategories, loading, error } = useReports(period);
+
+  if (loading) return <ReportSkeleton />;
+  if (error) return <div style={{ padding:40, color:'var(--red)', textAlign:'center' }}>{error}</div>;
+
+  const maxMerchant = spendingByMerchant[0]?.amount || 1;
 
   return (
-    <div>
-      {/* Page Header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '24px' }}>
+    <div className="page-transition">
+      <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start', marginBottom:24 }}>
         <div>
-          <h1 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '32px' }}>
-            Financial Performance
-          </h1>
-          <p style={{ color: 'var(--muted)', fontSize: '14px', marginTop: '4px' }}>
-            Comprehensive overview of your income, expenses, and savings.
-          </p>
+          <h1 style={{ fontFamily:'var(--font-display)', fontSize:28, fontWeight:700 }}>Financial Performance</h1>
+          <p style={{ color:'var(--muted)', marginTop:4, fontSize:14 }}>Analyze your income and expenditure patterns.</p>
         </div>
-
-        {/* Period Tabs */}
-        <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
-          {periodTabs.map((tab) => (
-            <button
-              key={tab}
-              className={activePeriod === tab ? 'btn-primary' : 'btn-ghost'}
-              style={{ height: '36px', padding: '0 14px', fontSize: '12px', borderRadius: '8px' }}
-              onClick={() => setActivePeriod(tab)}
-            >
-              {tab}
-            </button>
+        <div style={{ display:'flex', gap:4 }}>
+          {PERIODS.map(p => (
+            <button key={p.key} onClick={() => setPeriod(p.key)}
+              className={period===p.key ? 'btn-primary' : 'btn-ghost'}
+              style={{ height:36, padding:'0 14px', fontSize:13, fontWeight:600 }}>{p.label}</button>
           ))}
-          <button className="btn-ghost" style={{ width: '36px', height: '36px', padding: 0 }}>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <rect x="3" y="4" width="18" height="18" rx="2" />
-              <path d="M16 2v4" />
-              <path d="M8 2v4" />
-              <path d="M3 10h18" />
-            </svg>
-          </button>
         </div>
       </div>
 
-      {/* KPI Cards */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px' }}>
-        {/* Total Income */}
-        <div className="card anim-fade-up delay-0" style={{ padding: '24px' }}>
-          <div className="label-text">Total Income</div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '8px' }}>
-            <span className="currency-display anim-number" style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '28px', color: 'var(--green)' }}>
-              {formatINR(reportStats.totalIncome)}
-            </span>
-            <span className="badge badge-green">+12% ↑</span>
-          </div>
-        </div>
+      {/* KPIs */}
+      <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:20, marginBottom:24 }}>
+        <KPI label="TOTAL INCOME" value={summary?.totalIncome||0} color="var(--green)" />
+        <KPI label="TOTAL EXPENSES" value={summary?.totalExpenses||0} color="var(--red)" />
+        <KPI label="NET SAVINGS" value={summary?.netSavings||0} color="var(--text)"
+          badge={`${summary?.savingsMargin||0}% margin`} />
+      </div>
 
-        {/* Total Expenses */}
-        <div className="card anim-fade-up delay-1" style={{ padding: '24px' }}>
-          <div className="label-text">Total Expenses</div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '8px' }}>
-            <span className="currency-display anim-number delay-1" style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '28px', color: 'var(--red)' }}>
-              {formatINR(reportStats.totalExpenses)}
-            </span>
-            <span className="badge" style={{ borderColor: 'rgba(255,77,77,0.4)', color: 'var(--red)', background: 'rgba(255,77,77,0.08)' }}>+5% ↑</span>
-          </div>
+      {/* Merchant + Categories */}
+      <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:20, marginBottom:24 }}>
+        <div className="card anim-fade-up delay-2" style={{ padding:24 }}>
+          <h3 style={{ fontFamily:'var(--font-display)', fontSize:16, fontWeight:600, marginBottom:20 }}>Spending by Merchant</h3>
+          {spendingByMerchant.length === 0 ? <NoData /> : spendingByMerchant.slice(0,7).map((m,i) => (
+            <MerchantBar key={m.name} merchant={m} maxAmount={maxMerchant} delay={i*80} />
+          ))}
         </div>
-
-        {/* Net Savings */}
-        <div className="card anim-fade-up delay-2" style={{ padding: '24px' }}>
-          <div className="label-text">Net Savings</div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '8px' }}>
-            <span className="currency-display anim-number delay-2" style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '28px' }}>
-              {formatINR(reportStats.netSavings)}
-            </span>
-            <span style={{ color: 'var(--muted)', fontSize: '13px' }}>{reportStats.savingsMargin}% margin</span>
-          </div>
+        <div className="card anim-fade-up delay-3" style={{ padding:24 }}>
+          <h3 style={{ fontFamily:'var(--font-display)', fontSize:16, fontWeight:600, marginBottom:16 }}>Top Categories</h3>
+          {topCategories.length === 0 ? <NoData /> : topCategories.map((cat,i) => (
+            <div key={cat.category} className={`tbl-row anim-fade-up delay-${i}`}
+              style={{ gridTemplateColumns:'36px 1fr 110px 70px', gap:12, alignItems:'center', padding:'10px 4px' }}>
+              <div style={{ width:32, height:32, borderRadius:8, background:'var(--card-high)',
+                display:'flex', alignItems:'center', justifyContent:'center', fontSize:16 }}>
+                {CAT_ICONS[cat.category]||'📦'}
+              </div>
+              <div>
+                <p style={{ fontSize:13, fontWeight:600, marginBottom:2 }}>{cat.category}</p>
+                <p style={{ fontSize:11, color:'var(--muted)' }}>{cat.count} transactions</p>
+              </div>
+              <span style={{ fontFamily:'var(--font-display)', fontWeight:600, fontSize:13 }}>{formatINR(cat.amount)}</span>
+              <span style={{ color:'var(--green)', fontSize:12, textAlign:'right' }}>{cat.percent}%</span>
+            </div>
+          ))}
         </div>
       </div>
 
-      {/* Two Column Layout */}
-      <div style={{ display: 'grid', gridTemplateColumns: '45% 55%', gap: '20px', marginTop: '20px' }}>
-        {/* Left Column */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-          {/* Spending by Merchant */}
-          <div className="card anim-fade-up delay-3" style={{ padding: '24px' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-              <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '18px' }}>Spending by Merchant</h2>
-              <button style={{ background: 'none', border: 'none', color: 'var(--muted)', cursor: 'pointer', fontSize: '18px' }}>⋯</button>
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-              {merchantSpending.map((m, i) => (
-                <div key={m.name}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
-                    <span style={{ fontSize: '14px', fontWeight: 500 }}>{m.name}</span>
-                    <span className="currency-display" style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '14px' }}>
-                      {formatINR(m.amount)}
-                    </span>
-                  </div>
-                  <ProgressBar percent={m.percent} delay={i * 100} />
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Top Categories */}
-          <div className="card anim-fade-up delay-4" style={{ padding: '24px' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-              <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '18px' }}>Top Categories</h2>
-              <button style={{ background: 'none', border: 'none', color: 'var(--muted)', cursor: 'pointer' }}>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <polygon points="22,3 2,3 10,12.46 10,19 14,21 14,12.46" />
-                </svg>
-              </button>
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              {topCategories.map((cat) => (
-                <div key={cat.name} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  <div
-                    style={{
-                      width: '36px',
-                      height: '36px',
-                      borderRadius: '8px',
-                      background: 'var(--card-high)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontSize: '18px',
-                      flexShrink: 0,
-                    }}
-                  >
-                    {cat.icon}
-                  </div>
-                  <div style={{ flex: 1 }}>
-                    <div style={{ fontWeight: 500, fontSize: '14px' }}>{cat.name}</div>
-                    <div style={{ color: 'var(--muted)', fontSize: '12px' }}>{cat.txCount} transactions</div>
-                  </div>
-                  <div style={{ textAlign: 'right' }}>
-                    <div className="currency-display" style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '14px' }}>
-                      {formatINR(cat.amount)}
-                    </div>
-                    <div style={{ color: 'var(--green)', fontSize: '11px' }}>{cat.percent}% of total</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-            <div style={{ textAlign: 'center', marginTop: '20px', paddingTop: '16px', borderTop: '1px solid var(--border)' }}>
-              <span style={{ color: 'var(--green)', fontSize: '13px', fontWeight: 600, cursor: 'pointer' }}>
-                View All Categories
-              </span>
-            </div>
+      {/* Cash Flow Chart */}
+      <div className="card anim-fade-up delay-4" style={{ padding:24 }}>
+        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:20 }}>
+          <h3 style={{ fontFamily:'var(--font-display)', fontSize:16, fontWeight:600 }}>
+            Cash Flow Trend — {new Date().getFullYear()}
+          </h3>
+          <div style={{ display:'flex', gap:16 }}>
+            <LegDot color="#42e5b0" label="Income" />
+            <LegDot color="#ff9467" label="Expenses" />
           </div>
         </div>
-
-        {/* Right Column - Cash Flow Trend */}
-        <div className="card anim-fade-up delay-3" style={{ padding: '24px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-            <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '18px' }}>Cash Flow Trend</h2>
-            <button style={{ background: 'none', border: 'none', color: 'var(--muted)', cursor: 'pointer', fontSize: '18px' }}>⋯</button>
-          </div>
-          {/* Legend */}
-          <div style={{ display: 'flex', gap: '24px', marginBottom: '16px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <div style={{ width: '12px', height: '3px', background: '#42e5b0', borderRadius: '2px' }} />
-              <span style={{ fontSize: '12px', color: 'var(--muted)' }}>Income</span>
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <div style={{ width: '12px', height: '3px', background: '#ff9467', borderRadius: '2px' }} />
-              <span style={{ fontSize: '12px', color: 'var(--muted)' }}>Expenses</span>
-            </div>
-          </div>
-          <AreaChart data={cashFlowData} width={520} height={380} />
-        </div>
+        {cashFlow.length === 0 ? <NoData height={280} /> : (
+          <ResponsiveContainer width="100%" height={280}>
+            <AreaChart data={cashFlow} margin={{ top:10, right:10, left:10, bottom:0 }}>
+              <defs>
+                <linearGradient id="gIncome" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#42e5b0" stopOpacity={0.18} />
+                  <stop offset="95%" stopColor="#42e5b0" stopOpacity={0} />
+                </linearGradient>
+                <linearGradient id="gExpense" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#ff9467" stopOpacity={0.18} />
+                  <stop offset="95%" stopColor="#ff9467" stopOpacity={0} />
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="3 3" stroke="#1e2e26" vertical={false} />
+              <XAxis dataKey="month" tick={{ fill:'#85948c', fontSize:11 }} axisLine={{ stroke:'#3c4a43' }} tickLine={false} />
+              <YAxis tickFormatter={v => formatINRShort(v)} tick={{ fill:'#85948c', fontSize:11 }} axisLine={false} tickLine={false} width={60} />
+              <Tooltip content={<CashTooltip />} />
+              <Area type="monotone" dataKey="income" name="Income" stroke="#42e5b0" strokeWidth={2} fill="url(#gIncome)"
+                dot={false} activeDot={{ r:5, fill:'#42e5b0', stroke:'#0e1511', strokeWidth:2 }} animationDuration={1000} />
+              <Area type="monotone" dataKey="expenses" name="Expenses" stroke="#ff9467" strokeWidth={2} fill="url(#gExpense)"
+                dot={false} activeDot={{ r:5, fill:'#ff9467', stroke:'#0e1511', strokeWidth:2 }} animationDuration={1200} />
+            </AreaChart>
+          </ResponsiveContainer>
+        )}
       </div>
     </div>
   );
+}
+
+function KPI({ label, value, color, badge }) {
+  return (
+    <div className="card anim-fade-up delay-0" style={{ padding:24 }}>
+      <span className="label-text">{label}</span>
+      <div style={{ display:'flex', alignItems:'baseline', gap:12, marginTop:8 }}>
+        <span className="currency-display anim-number" style={{ fontFamily:'var(--font-display)', fontSize:28, fontWeight:700, color }}>
+          {formatINR(value)}
+        </span>
+        {badge && <span style={{ fontSize:11, fontWeight:600, background:'var(--card-high)', color:'var(--muted)', borderRadius:4, padding:'2px 8px' }}>{badge}</span>}
+      </div>
+    </div>
+  );
+}
+
+function MerchantBar({ merchant, maxAmount, delay }) {
+  const pct = Math.round((merchant.amount / maxAmount) * 100);
+  return (
+    <div style={{ marginBottom:16 }}>
+      <div style={{ display:'flex', justifyContent:'space-between', marginBottom:6 }}>
+        <span style={{ fontSize:13, color:'var(--secondary)' }}>{merchant.name}</span>
+        <span style={{ fontFamily:'var(--font-display)', fontWeight:600, fontSize:13 }}>{formatINR(merchant.amount)}</span>
+      </div>
+      <div style={{ height:4, background:'var(--card-high)', borderRadius:2, overflow:'hidden' }}>
+        <div style={{ height:'100%', width:`${pct}%`, background:'linear-gradient(90deg, #42e5b0, #00c896)', borderRadius:2,
+          animation: `barGrow 0.8s cubic-bezier(0.22,1,0.36,1) ${delay}ms both` }} />
+      </div>
+    </div>
+  );
+}
+
+function LegDot({ color, label }) {
+  return <div style={{ display:'flex', alignItems:'center', gap:6 }}>
+    <div style={{ width:8, height:8, borderRadius:'50%', background:color }} />
+    <span style={{ fontSize:12, color:'var(--muted)' }}>{label}</span>
+  </div>;
+}
+function NoData({ height=80 }) {
+  return <div style={{ height, display:'flex', alignItems:'center', justifyContent:'center', color:'var(--muted)', fontSize:13 }}>No data for this period</div>;
+}
+function ReportSkeleton() {
+  return <div style={{ display:'flex', flexDirection:'column', gap:20 }}>
+    {[100,160,320].map(h => <div key={h} className="card" style={{ height:h,
+      backgroundImage:'linear-gradient(90deg,var(--card) 0%,var(--card-high) 50%,var(--card) 100%)',
+      backgroundSize:'600px 100%', animation:'shimmer 1.5s infinite linear' }} />)}
+  </div>;
 }
