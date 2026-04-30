@@ -80,12 +80,13 @@ const navItems = [
   },
 ];
 
-export default function Sidebar() {
+export default function Sidebar({ isMobileOpen, setMobileOpen }) {
   const navigate = useNavigate();
   const { logout } = useAuth();
 
   return (
     <nav
+      className={`sidebar-container ${isMobileOpen ? 'open' : ''}`}
       style={{
         position: 'fixed',
         top: 0,
@@ -120,6 +121,9 @@ export default function Sidebar() {
           <NavLink
             key={item.to}
             to={item.to}
+            onClick={() => {
+              if (window.innerWidth <= 1024 && setMobileOpen) setMobileOpen(false);
+            }}
             className={({ isActive }) => `nav-item anim-slide-in delay-${i} ${isActive ? 'active' : ''}`}
           >
             {item.icon}
