@@ -1,18 +1,19 @@
-export const formatINR = (amount, showSign = false) => {
+export const formatINR = (amount = 0) => {
   const abs = Math.abs(amount);
-  const formatted = abs.toLocaleString('en-IN', {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  });
-  if (showSign) {
-    return amount >= 0 ? `+\u20B9\u00A0${formatted}` : `-\u20B9\u00A0${formatted}`;
-  }
-  return `\u20B9${formatted}`;
+  return `₹${abs.toLocaleString('en-IN', { minimumFractionDigits:2, maximumFractionDigits:2 })}`;
 };
 
-export const formatINRShort = (amount) => {
-  if (amount >= 10000000) return `\u20B9${(amount/10000000).toFixed(2)}Cr`;
-  if (amount >= 100000)   return `\u20B9${(amount/100000).toFixed(2)}L`;
-  if (amount >= 1000)     return `\u20B9${(amount/1000).toFixed(1)}K`;
-  return `\u20B9${amount.toLocaleString('en-IN')}`;
+export const formatINRShort = (value = 0) => {
+  const abs = Math.abs(value);
+  if (abs >= 10000000) return `₹${(abs/10000000).toFixed(1)}Cr`;
+  if (abs >= 100000)   return `₹${(abs/100000).toFixed(1)}L`;
+  if (abs >= 1000)     return `₹${(abs/1000).toFixed(0)}K`;
+  return `₹${abs.toLocaleString('en-IN')}`;
+};
+
+export const formatDate = (date, fmt = 'short') => {
+  const d = new Date(date);
+  if (fmt === 'short')  return d.toLocaleDateString('en-IN', { day:'2-digit', month:'short' });
+  if (fmt === 'full')   return d.toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' });
+  return d.toISOString().split('T')[0];
 };

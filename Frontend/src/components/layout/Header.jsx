@@ -1,5 +1,6 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { useAuth } from '../../hooks/useAuth';
 
 const routeNames = {
   '/dashboard': 'Dashboard',
@@ -13,6 +14,7 @@ const routeNames = {
 export default function Header() {
   const location = useLocation();
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [search, setSearch] = useState('');
   const currentRoute = routeNames[location.pathname] || 'Dashboard';
 
@@ -39,35 +41,21 @@ export default function Header() {
         {/* Search bar */}
         <div style={{ position: 'relative' }}>
           <svg
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="var(--muted)"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
+            width="16" height="16" viewBox="0 0 24 24" fill="none"
+            stroke="var(--muted)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
             style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }}
           >
             <circle cx="11" cy="11" r="8" />
             <line x1="21" y1="21" x2="16.65" y2="16.65" />
           </svg>
           <input
-            type="text"
-            placeholder="Search..."
-            value={search}
+            type="text" placeholder="Search..." value={search}
             onChange={(e) => setSearch(e.target.value)}
             style={{
-              width: '260px',
-              height: '36px',
-              background: 'var(--card)',
-              border: '1px solid var(--border)',
-              borderRadius: '8px',
-              color: 'var(--text)',
-              fontFamily: 'var(--font-body)',
-              fontSize: '13px',
-              padding: '0 14px 0 36px',
-              outline: 'none',
+              width: '260px', height: '36px', background: 'var(--card)',
+              border: '1px solid var(--border)', borderRadius: '8px',
+              color: 'var(--text)', fontFamily: 'var(--font-body)',
+              fontSize: '13px', padding: '0 14px 0 36px', outline: 'none',
               transition: 'border-color 0.2s',
             }}
             onFocus={(e) => (e.target.style.borderColor = 'var(--green)')}
@@ -78,14 +66,9 @@ export default function Header() {
         {/* Bell icon */}
         <button
           style={{
-            background: 'none',
-            border: 'none',
-            cursor: 'pointer',
-            color: 'var(--muted)',
-            transition: 'color 0.2s',
-            display: 'flex',
-            alignItems: 'center',
-            padding: '4px',
+            background: 'none', border: 'none', cursor: 'pointer',
+            color: 'var(--muted)', transition: 'color 0.2s',
+            display: 'flex', alignItems: 'center', padding: '4px',
           }}
           onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--green)')}
           onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--muted)')}
@@ -99,14 +82,9 @@ export default function Header() {
         {/* Settings icon */}
         <button
           style={{
-            background: 'none',
-            border: 'none',
-            cursor: 'pointer',
-            color: 'var(--muted)',
-            transition: 'color 0.2s',
-            display: 'flex',
-            alignItems: 'center',
-            padding: '4px',
+            background: 'none', border: 'none', cursor: 'pointer',
+            color: 'var(--muted)', transition: 'color 0.2s',
+            display: 'flex', alignItems: 'center', padding: '4px',
           }}
           onClick={() => navigate('/settings')}
           onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--green)')}
@@ -118,28 +96,26 @@ export default function Header() {
           </svg>
         </button>
 
-        {/* Avatar */}
+        {/* Avatar with user initials */}
         <div
           style={{
-            width: '36px',
-            height: '36px',
-            borderRadius: '50%',
-            background: 'var(--green)',
-            color: '#003828',
-            fontWeight: 700,
-            fontSize: '14px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            cursor: 'pointer',
-            transition: 'transform 0.15s',
+            width: '36px', height: '36px', borderRadius: '50%',
+            background: 'var(--green)', color: '#003828',
+            fontWeight: 700, fontSize: '14px',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            cursor: 'pointer', transition: 'transform 0.15s',
             fontFamily: 'var(--font-display)',
+            overflow: 'hidden'
           }}
           onClick={() => navigate('/settings')}
           onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.05)')}
           onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
         >
-          AS
+          {user?.avatar ? (
+            <img src={user.avatar} alt="Avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          ) : (
+            user?.initials || 'U'
+          )}
         </div>
       </div>
     </header>

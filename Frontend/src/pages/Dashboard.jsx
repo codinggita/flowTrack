@@ -1,192 +1,179 @@
-import { useNavigate } from 'react-router-dom';
-import { dashboardStats, spendingByCategory, monthSummaryAlerts, recentTransactions } from '../data/dummy';
-import { formatINR } from '../utils/format';
-import StatCard from '../components/ui/StatCard';
-import DonutChart from '../components/charts/DonutChart';
+import { useState } from 'react';
+import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
+import { useDashboard } from '../hooks/useDashboard';
+import { formatINR, formatDate } from '../utils/format';
+
+const COLORS = {
+  Food:'#42e5b0', Transport:'#ff9467', Shopping:'#ffbca2',
+  Subscriptions:'#85948c', Utilities:'#3c4a43', Others:'#2a3530',
+  Income:'#42b0e5', Investment:'#a0e542', Housing:'#e5b042',
+  Software:'#7c42e5', Tech:'#e542a0',
+};
+
+const DonutTooltip = ({ active, payload }) => {
+  if (!active || !payload?.length) return null;
+  const { category, amount, percent } = payload[0].payload;
+  return (
+    <div style={{ background:'#1a211d', border:'1px solid #3c4a43', borderRadius:8, padding:'10px 14px' }}>
+      <p style={{ color:'#85948c', fontSize:11 }}>{category}</p>
+      <p style={{ color:'#42e5b0', fontFamily:'Manrope', fontWeight:700, fontSize:16 }}>{formatINR(amount)}</p>
+      <p style={{ color:'#85948c', fontSize:11 }}>{percent}% of total</p>
+    </div>
+  );
+};
 
 export default function Dashboard() {
-  const navigate = useNavigate();
+  const { summary, spendingByCategory, recentTransactions, loading, error } = useDashboard();
+  const [activeIdx, setActiveIdx] = useState(null);
+
+  if (loading) return <Skeleton />;
+  if (error) return <ErrorMsg msg={error} />;
+
+  const topCat = spendingByCategory[0]?.category || '—';
 
   return (
-    <div>
-      {/* Stat Cards */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px' }}>
-        <StatCard
-          label="Total Spent"
-          amount={dashboardStats.totalSpent}
-          color="var(--red)"
-          delay={0}
-          icon={
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--red)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="23,18 13.5,8.5 8.5,13.5 1,6" />
-              <polyline points="17,18 23,18 23,12" />
-            </svg>
-          }
-        />
-        <StatCard
-          label="Total Earned"
-          amount={dashboardStats.totalEarned}
-          color="var(--green)"
-          delay={1}
-          icon={
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--green)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="23,6 13.5,15.5 8.5,10.5 1,18" />
-              <polyline points="17,6 23,6 23,12" />
-            </svg>
-          }
-        />
-        <StatCard
-          label="Net Savings"
-          amount={dashboardStats.netSavings}
-          color="var(--text)"
-          delay={2}
-          icon={
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--green)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M3 21V5a2 2 0 012-2h14a2 2 0 012 2v16" />
-              <path d="M3 21h18" />
-              <path d="M9 8h6" />
-              <path d="M9 12h6" />
-              <path d="M9 16h6" />
-            </svg>
-          }
-        />
-      </div>
-
-      {/* Two-column: Donut + Alerts */}
-      <div style={{ display: 'grid', gridTemplateColumns: '3fr 2fr', gap: '20px', marginTop: '20px' }}>
-        {/* Spending by Category */}
-        <div className="card anim-fade-up delay-3" style={{ padding: '24px' }}>
-          <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '18px', marginBottom: '24px' }}>
-            Spending by Category
-          </h2>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '32px' }}>
-            <DonutChart data={spendingByCategory} size={200} strokeWidth={22} />
-            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              {spendingByCategory.map((cat) => (
-                <div key={cat.name} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                  <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: cat.color, flexShrink: 0 }} />
-                  <span style={{ fontSize: '13px', flex: 1 }}>{cat.name}</span>
-                  <span
-                    className="currency-display"
-                    style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '13px' }}
-                  >
-                    {formatINR(cat.value)}
-                  </span>
-                </div>
-              ))}
+    <div className="page-transition">
+      {/* KPI Cards */}
+      <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:20, marginBottom:20 }}>
+        {[
+          { label:'Total Spent',  value:summary?.totalExpenses||0, color:'var(--red)',   delay:'delay-0' },
+          { label:'Total Earned', value:summary?.totalIncome||0,   color:'var(--green)', delay:'delay-1' },
+          { label:'Net Savings',  value:summary?.netSavings||0,    color:'var(--text)',  delay:'delay-2' },
+        ].map(({ label, value, color, delay }) => (
+          <div key={label} className={`card anim-fade-up ${delay}`} style={{ padding:24 }}>
+            <span className="label-text">{label}</span>
+            <div className={`anim-number ${delay}`} style={{
+              fontFamily:'var(--font-display)', fontSize:36, fontWeight:700, color, marginTop:12,
+            }}>
+              {formatINR(value)}
             </div>
           </div>
-        </div>
+        ))}
+      </div>
 
-        {/* This Month Summary */}
-        <div className="card anim-fade-up delay-4" style={{ padding: '24px' }}>
-          <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '18px', marginBottom: '16px' }}>
-            This Month Summary
+      {/* Donut + Alerts */}
+      <div style={{ display:'grid', gridTemplateColumns:'60% 1fr', gap:20, marginBottom:20 }}>
+        <div className="card anim-fade-up delay-3" style={{ padding:24 }}>
+          <h2 style={{ fontFamily:'var(--font-display)', fontSize:18, fontWeight:600, marginBottom:20 }}>
+            Spending by Category
           </h2>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-            {monthSummaryAlerts.map((alert, i) => (
-              <div
-                key={alert.id}
-                className={`anim-fade-up delay-${i + 3}`}
-                style={{
-                  background: 'var(--card-high)',
-                  border: '1px solid var(--border)',
-                  borderRadius: '8px',
-                  padding: '16px',
-                }}
-              >
-                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
-                  <div
-                    style={{
-                      width: '36px',
-                      height: '36px',
-                      borderRadius: '8px',
-                      background: alert.type === 'warning' ? 'rgba(255,188,162,0.12)' : 'rgba(66,229,176,0.08)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      flexShrink: 0,
-                    }}
-                  >
-                    {alert.type === 'warning' ? (
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <polyline points="23,6 13.5,15.5 8.5,10.5 1,18" />
-                        <polyline points="17,6 23,6 23,12" />
-                      </svg>
-                    ) : (
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--green)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <polyline points="23,4 23,10 17,10" />
-                        <path d="M20.49 15a9 9 0 11-2.12-9.36L23 10" />
-                      </svg>
-                    )}
-                  </div>
-                  <div>
-                    <div style={{ fontWeight: 600, fontSize: '14px', marginBottom: '4px' }}>{alert.title}</div>
-                    <div style={{ color: 'var(--muted)', fontSize: '13px', lineHeight: 1.5 }}>{alert.desc}</div>
+          {spendingByCategory.length === 0
+            ? <Empty msg="No expenses this month yet" />
+            : (
+              <div style={{ display:'flex', alignItems:'center', gap:24 }}>
+                <div style={{ position:'relative', width:200, height:200, flexShrink:0 }}>
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie data={spendingByCategory} dataKey="amount" nameKey="category"
+                        cx="50%" cy="50%" innerRadius={68} outerRadius={96} paddingAngle={2}
+                        animationBegin={0} animationDuration={900}
+                        onMouseEnter={(_,i) => setActiveIdx(i)}
+                        onMouseLeave={() => setActiveIdx(null)}>
+                        {spendingByCategory.map((d,i) => (
+                          <Cell key={d.category} fill={COLORS[d.category] || '#85948c'}
+                            opacity={activeIdx === null || activeIdx === i ? 1 : 0.35} stroke="none" />
+                        ))}
+                      </Pie>
+                      <Tooltip content={<DonutTooltip />} />
+                    </PieChart>
+                  </ResponsiveContainer>
+                  <div style={{ position:'absolute', inset:0, display:'flex', flexDirection:'column',
+                    alignItems:'center', justifyContent:'center', pointerEvents:'none' }}>
+                    <span style={{ fontSize:10, color:'var(--muted)' }}>Top Category</span>
+                    <span style={{ fontFamily:'var(--font-display)', fontWeight:700, fontSize:14 }}>{topCat}</span>
                   </div>
                 </div>
+                <div style={{ flex:1, display:'flex', flexDirection:'column', gap:8 }}>
+                  {spendingByCategory.map((d,i) => (
+                    <div key={d.category} style={{
+                      display:'flex', alignItems:'center', gap:10, padding:'4px 8px', borderRadius:6,
+                      background: activeIdx===i ? 'var(--card-high)' : 'transparent', cursor:'pointer', transition:'background 0.15s',
+                    }} onMouseEnter={() => setActiveIdx(i)} onMouseLeave={() => setActiveIdx(null)}>
+                      <div style={{ width:8, height:8, borderRadius:'50%', background: COLORS[d.category]||'#85948c', flexShrink:0 }} />
+                      <span style={{ flex:1, fontSize:13, color:'var(--secondary)' }}>{d.category}</span>
+                      <span style={{ fontFamily:'var(--font-display)', fontWeight:600, fontSize:13 }}>{formatINR(d.amount)}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
-            ))}
+            )}
+        </div>
+
+        <div className="card anim-fade-up delay-4" style={{ padding:24 }}>
+          <h2 style={{ fontFamily:'var(--font-display)', fontSize:18, fontWeight:600, marginBottom:16 }}>This Month Summary</h2>
+          <div style={{ display:'flex', flexDirection:'column', gap:12 }}>
+            {spendingByCategory.length > 0 && (
+              <AlertCard title={`${spendingByCategory[0].category} Spending Alert`}
+                desc={`You spent ${formatINR(spendingByCategory[0].amount)} on ${spendingByCategory[0].category} — ${spendingByCategory[0].percent}% of your total.`} />
+            )}
+            {summary?.netSavings < 0 && (
+              <AlertCard title="Spending Exceeds Income"
+                desc={`Your expenses exceed income by ${formatINR(Math.abs(summary.netSavings))} this month.`} />
+            )}
+            {spendingByCategory.length === 0 && (
+              <p style={{ color:'var(--muted)', fontSize:13 }}>Add transactions to see insights.</p>
+            )}
           </div>
         </div>
       </div>
 
       {/* Recent Transactions */}
-      <div className="card anim-fade-up delay-5" style={{ marginTop: '20px', padding: '24px' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-          <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '18px' }}>
-            Recent Transactions
-          </h2>
-          <span
-            style={{ color: 'var(--green)', fontSize: '13px', fontWeight: 600, cursor: 'pointer' }}
-            onClick={() => navigate('/transactions')}
-          >
-            View All
-          </span>
+      <div className="card anim-fade-up delay-5" style={{ padding:24 }}>
+        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:16 }}>
+          <h2 style={{ fontFamily:'var(--font-display)', fontSize:18, fontWeight:600 }}>Recent Transactions</h2>
+          <a href="/transactions" style={{ color:'var(--green)', fontSize:13, textDecoration:'none' }}>View All</a>
         </div>
-
-        {/* Table Header */}
-        <div
-          className="tbl-head"
-          style={{ gridTemplateColumns: '80px 1fr 140px 140px 120px' }}
-        >
-          <span>Date</span>
-          <span>Description</span>
-          <span>Category</span>
-          <span>Account</span>
-          <span style={{ textAlign: 'right' }}>Amount</span>
+        <div className="tbl-head" style={{ gridTemplateColumns:'80px 1fr 130px 130px 120px' }}>
+          {['DATE','DESCRIPTION','CATEGORY','ACCOUNT','AMOUNT'].map(h => <span key={h}>{h}</span>)}
         </div>
-
-        {/* Table Rows */}
-        {recentTransactions.map((tx, i) => (
-          <div
-            key={i}
-            className={`tbl-row anim-fade-up delay-${i}`}
-            style={{ gridTemplateColumns: '80px 1fr 140px 140px 120px' }}
-          >
-            <span style={{ color: 'var(--muted)', fontSize: '13px' }}>{tx.date}</span>
-            <span style={{ fontSize: '14px', fontWeight: 500 }}>{tx.desc}</span>
-            <span>
-              <span className={`badge ${tx.category === 'Income' || tx.category === 'Investment' ? 'badge-green' : ''}`}>
-                {tx.category}
+        {recentTransactions.length === 0
+          ? <Empty msg="No transactions yet. Add your first one!" />
+          : recentTransactions.map((tx, i) => (
+            <div key={tx._id} className={`tbl-row anim-fade-up delay-${Math.min(i,8)}`}
+              style={{ gridTemplateColumns:'80px 1fr 130px 130px 120px' }}>
+              <span style={{ color:'var(--muted)', fontSize:13 }}>{formatDate(tx.date)}</span>
+              <span style={{ fontSize:14 }}>{tx.description}</span>
+              <span><span className={`badge ${['Income','Investment'].includes(tx.category)?'badge-green':''}`}>{tx.category}</span></span>
+              <span style={{ color:'var(--secondary)', fontSize:13 }}>{tx.accountId?.name||'—'}</span>
+              <span style={{ textAlign:'right', fontFamily:'var(--font-display)', fontWeight:600,
+                color: tx.type==='income' ? 'var(--green)' : 'var(--red)' }}>
+                {tx.type==='income' ? '+' : '-'}{formatINR(tx.amount)}
               </span>
-            </span>
-            <span style={{ color: 'var(--muted)', fontSize: '13px' }}>{tx.account}</span>
-            <span
-              className="currency-display"
-              style={{
-                textAlign: 'right',
-                fontFamily: 'var(--font-display)',
-                fontWeight: 600,
-                fontSize: '14px',
-                color: tx.positive ? 'var(--green)' : 'var(--red)',
-              }}
-            >
-              {formatINR(tx.amount, true)}
-            </span>
-          </div>
-        ))}
+            </div>
+          ))}
       </div>
     </div>
   );
+}
+
+function AlertCard({ title, desc }) {
+  return (
+    <div style={{ background:'var(--card-high)', border:'1px solid var(--border)', borderRadius:8, padding:14 }}>
+      <p style={{ fontWeight:600, fontSize:13, marginBottom:4 }}>{title}</p>
+      <p style={{ color:'var(--muted)', fontSize:12, lineHeight:1.6 }}>{desc}</p>
+    </div>
+  );
+}
+function Empty({ msg }) {
+  return <div style={{ height:120, display:'flex', alignItems:'center', justifyContent:'center', color:'var(--muted)', fontSize:13 }}>{msg}</div>;
+}
+function Skeleton() {
+  return (
+    <div style={{ display:'flex', flexDirection:'column', gap:20 }}>
+      <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:20 }}>
+        {[1,2,3].map(i => <div key={i} className="card" style={{ height:100,
+          backgroundImage:'linear-gradient(90deg,var(--card) 0%,var(--card-high) 50%,var(--card) 100%)',
+          backgroundSize:'600px 100%', animation:'shimmer 1.5s infinite linear' }} />)}
+      </div>
+      <div className="card" style={{ height:300,
+        backgroundImage:'linear-gradient(90deg,var(--card) 0%,var(--card-high) 50%,var(--card) 100%)',
+        backgroundSize:'600px 100%', animation:'shimmer 1.5s infinite linear' }} />
+    </div>
+  );
+}
+function ErrorMsg({ msg }) {
+  return <div style={{ padding:40, textAlign:'center', color:'var(--red)' }}>
+    <p style={{ fontWeight:600 }}>Failed to load dashboard</p>
+    <p style={{ color:'var(--muted)', fontSize:13, marginTop:8 }}>{msg}</p>
+  </div>;
 }
