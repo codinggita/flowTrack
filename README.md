@@ -1,126 +1,130 @@
 
-# 💸 FlowTrack
+# 💸 FlowTrack — Premium Finance Management
 
-> **One dashboard for all your money** — UPI apps, cards, wallets, bank accounts & subscriptions in a premium, high-fidelity interface.
+> **One dashboard for all your money** — Unified tracking for bank accounts, UPI activity, cards, and subscriptions in a high-fidelity, professional interface.
 
 ---
 
 ## 🔍 Overview
 
-FlowTrack is a **personal finance dashboard** built specifically for the Indian payment ecosystem. It brings all your money activity into one place with a focus on **visual excellence**, **smooth interactions**, and **data clarity**.
+FlowTrack is a **full-stack personal finance dashboard** designed for modern digital payment ecosystems. It centralizes all your financial activity with a focus on **visual excellence**, **smooth interactions**, and **actionable data clarity**.
 
-The application follows a strict **"Triple-Black" tonal design aesthetic**—prioritizing depth through layering rather than shadows, using vibrant green accents, and featuring high-performance custom SVG visualizations.
+The application adheres to a strict **"Triple-Black" tonal design aesthetic**, prioritizing depth through layering, vibrant green accents, and high-performance custom SVG visualizations for a truly premium feel.
 
 ---
 
 ## ✨ Features Implemented
 
-- 🎨 **Premium UI/UX**: Custom "Triple-Black" tonal theme with glassmorphism and modern typography (Manrope & Inter).
-- 📊 **Custom Data Visualizations**: 
-    - **Animated Area Charts**: High-performance SVG paths with cubic-bezier transitions.
-    - **Donut Charts**: Dynamic stroke-dasharray animations for category breakdowns.
-    - **Interactive Progress Bars**: Tiered spending indicators for merchants.
-- 🔐 **Advanced Authentication**: Fully functional Login and Registration pages with **Formik** + **Yup** validation, icon-prefixed inputs, and password toggles.
-- 🏦 **Comprehensive Dashboard**:
-    - **KPI Cards**: Real-time snapshots of Net Worth, Monthly Budget, and Savings.
-    - **Monthly Trend**: Interactive spending trends over time.
-    - **Recent Activity**: High-density transaction logs.
-- 📂 **Feature Modules**:
-    - **Transactions**: Advanced filtering, categorization, and paginated data tables.
-    - **Accounts**: Unified view of UPI apps, Bank accounts, and Credit cards.
-    - **Reports**: Depth-first analysis of income vs. expenses and merchant-specific trends.
-    - **Recurring**: Subscription management with renewal countdowns and real brand logos (Netflix, Spotify, etc.).
-    - **Settings**: Complete user profile controls, security toggles, and session monitoring.
-- 🚀 **Performance**: Staggered entrance animations and optimized React 19 rendering.
-- 🎫 **Support Center**: Integrated ticketing system with Formspree notifications, FAQs, and help articles.
-- ⚖️ **Legal & Compliance**: Built-in Privacy Policy, Terms of Service, and a Consent Management system (DPDP Act compliant).
-- 🔔 **Intelligent Notifications**: Real-time spending alerts, low balance warnings, and subscription reminders.
+### 🎨 Visual Excellence
+- **Triple-Black Design**: A custom tonal theme built with glassmorphism and modern typography (Manrope & Inter).
+- **Custom Charts**: High-performance SVG paths with cubic-bezier transitions for spending trends and category breakdowns.
+- **Micro-animations**: Staggered entrance animations and optimized React 19 rendering for a smooth UX.
+
+### 🏦 Core Finance Modules
+- **Dashboard**: Real-time snapshots of Net Worth, Monthly Budget, and Savings with interactive spending trends.
+- **Transactions**: Advanced filtering, categorization, and paginated logs for all financial activity.
+- **Accounts**: Unified management of UPI apps (GPay, PhonePe), Bank accounts, and Credit cards.
+- **Reports**: Deep-dive analysis of Income vs. Expenses and merchant-specific trends.
+- **Subscriptions**: Recurring payment tracker with renewal countdowns and real brand logos.
+
+### 🔐 Security & Backend
+- **Advanced Auth**: JWT-based authentication with Login, Register, and Password Reset flows.
+- **Session Management**: Monitor and manage active sessions for enhanced security.
+- **Audit Logs**: Backend activity logging to track critical account changes.
+- **Automated Jobs**: Cron jobs for recurring payment processing and notification alerts.
+
+### 🎫 Support & Compliance
+- **Support Center**: Integrated ticketing system with admin notifications via Formspree.
+- **Legal Compliance**: Built-in Privacy Policy, Terms of Service, and a GDPR/DPDP Act compliant Consent Management system.
+- **Notifications**: Real-time spending alerts and subscription reminders.
 
 ---
 
-## 🛠️ Tech Stack
+## 🛠️ Technology Stack
 
 | Layer | Technology |
 |-------|------------|
-| **Core** | React 19 + Vite |
+| **Frontend** | React 19 + Vite |
+| **Backend** | Node.js + Express.js |
+| **Database** | MongoDB + Mongoose |
 | **Styling** | Tailwind CSS v4 + Vanilla CSS |
-| **UI Components** | Material UI (MUI) 9 |
-| **Charts** | Custom Inline SVG + CSS Animations (No external chart libraries) |
-| **Forms** | Formik + Yup |
-| **Routing** | React Router 7 |
-
----
-
-## 📸 Pages Overview
-
-| Page | Route | Description |
-|------|-------|-------------|
-| 🏠 **Dashboard** | `/dashboard` | Monthly summary, trend charts, and quick-action KPIs. |
-| 💸 **Transactions** | `/transactions` | Filterable list of all activity with category management. |
-| 🏦 **Accounts** | `/accounts` | Manage GPay, PhonePe, Cards, and Bank accounts. |
-| 📈 **Reports** | `/reports` | Deep-dive trends and merchant spending progress. |
-| 🔁 **Recurring** | `/recurring` | Subscription tracker with real brand branding. |
-| ⚙️ **Settings** | `/settings` | User profile, security settings, and notifications. |
-| 🎫 **Support** | `/support` | Help center, FAQs, and ticket submission. |
-| ⚖️ **Legal** | `/terms`, `/privacy` | Legal compliance and data protection policies. |
-| 🔐 **Auth** | `/login`, `/register` | Professional authentication with Forgot Password flow. |
+| **Auth** | JSON Web Tokens (JWT) + Bcrypt |
+| **Communications** | Nodemailer (Email) + Formspree |
 
 ---
 
 ## 🚀 Getting Started
 
-1. **Environment Setup**:
-   - Create a `.env` file in the `Backend` folder (see `.env.example`).
-   - Create a `.env` file in the `Frontend` folder (see `.env.example`).
+### 1. Prerequisites
+- Node.js (v18+)
+- MongoDB Atlas account or local MongoDB instance
 
-2. **Install Dependencies**:
-   ```bash
-   # Root directory
-   npm install
+### 2. Environment Setup
+Create a `.env` file in both `Backend` and `Frontend` directories based on the provided `.env.example` files.
 
-   # Backend directory
-   cd Backend && npm install
+### 3. Installation
+```bash
+# Clone the repository
+git clone https://github.com/SwarajPrajapati2006/flowTrack.git
+cd flowTrack
 
-   # Frontend directory
-   cd ../Frontend && npm install
-   ```
+# Install Backend dependencies
+cd Backend
+npm install
 
-3. **Run Development Servers**:
-   ```bash
-   # Terminal 1 (Backend)
-   cd Backend && npm run dev
+# Install Frontend dependencies
+cd ../Frontend
+npm install
+```
 
-   # Terminal 2 (Frontend)
-   cd Frontend && npm run dev
-   ```
+### 4. Running Locally
+```bash
+# Terminal 1: Backend
+cd Backend
+npm run dev
 
-4. **Open the App**:
-   Visit `http://localhost:5173` to see the dashboard.
+# Terminal 2: Frontend
+cd Frontend
+npm run dev
+```
+
+Visit `http://localhost:5173` to experience FlowTrack.
 
 ---
 
-## 🚀 Deployment Instructions
+## 📦 Project Structure
 
-### Backend (Render / Railway / Heroku)
-1. Set the following environment variables:
-   - `MONGODB_URI`: Your MongoDB Atlas connection string.
-   - `JWT_SECRET`: A secure random string for tokens.
-   - `EMAIL_USER` & `EMAIL_PASS`: Your Gmail/SMTP credentials.
-   - `CLIENT_URL`: Your deployed frontend URL.
-   - `FORMSPREE_URL`: Your Formspree endpoint for admin alerts.
+```text
+flowTrack/
+├── Backend/
+│   ├── src/
+│   │   ├── controllers/   # Business logic
+│   │   ├── models/        # Database schemas
+│   │   ├── routes/        # API endpoints
+│   │   ├── middleware/    # Auth & Error handling
+│   │   └── utils/         # Helpers (Tokens, Emails)
+│   └── server.js          # Entry point
+├── Frontend/
+│   ├── src/
+│   │   ├── components/    # Reusable UI & Layout
+│   │   ├── pages/         # Screen views
+│   │   ├── hooks/         # Custom React hooks
+│   │   └── services/      # API client
+│   └── index.html
+└── README.md
+```
+
+---
+
+## 🚀 Deployment
+
+### Backend (Render / Railway)
+1. Set the following Env Vars: `MONGODB_URI`, `JWT_SECRET`, `EMAIL_USER`, `EMAIL_PASS`, `CLIENT_URL`.
+2. Ensure the database whitelist allows connections from your deployment provider.
 
 ### Frontend (Vercel / Netlify)
-1. Set the following environment variables:
-   - `VITE_API_URL`: Your deployed backend API URL (e.g., `https://api.yourdomain.com/api`).
-   - `VITE_GOOGLE_CLIENT_ID`: Your Google OAuth Client ID.
-
-
----
-
-## 🎨 Design Reference
-
-* 🔗 [Figma Design](https://www.figma.com/design/drhC7vDVlQUDH97dLY1XoT/Untitled?node-id=0-1&t=5bhMn4Wi6TsHoY4d-1)
-* 🚀 [Figma Prototype](https://www.figma.com/proto/drhC7vDVlQUDH97dLY1XoT/Untitled?node-id=2-286&viewport=-2915%2C157%2C0.36&t=JxkcVty4PfyYElJ2-1&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=2%3A348&page-id=0%3A1)
+1. Set `VITE_API_URL` to your deployed backend URL.
+2. Configure your build command as `npm run build` and output directory as `dist`.
 
 ---
 
