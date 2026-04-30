@@ -1,4 +1,4 @@
-﻿@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap');
 
 /* Tailwind v4 base */
 @import "tailwindcss";
@@ -411,5 +411,105 @@ body {
   .badge {
     font-size: 9px;
     padding: 1px 6px;
+  }
+}
+
+/* ── RESPONSIVE GRIDS ───────────────────────────── */
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.grid-chart {
+  display: grid;
+  grid-template-columns: 60% 1fr;
+  gap: 20px;
+}
+.session-meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 4px 16px;
+  margin-top: 6px;
+}
+
+@media (max-width: 1024px) {
+  .grid-chart {
+    grid-template-columns: 1fr;
+  }
+  .session-meta {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .grid-2 {
+    grid-template-columns: 1fr;
+  }
+  .grid-3 {
+    grid-template-columns: 1fr 1fr;
+  }
+  .session-meta {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 500px) {
+  .grid-3 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── RESPONSIVE TABLES ──────────────────────────── */
+.tbl-mobile-hide {
+  display: table-cell;
+}
+.tbl-scroll-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (max-width: 768px) {
+  .tbl-mobile-hide {
+    display: none !important;
+  }
+}
+
+/* ── OVERFLOW HELPERS ───────────────────────────── */
+.text-ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+.word-break {
+  word-break: break-all;
+  overflow-wrap: anywhere;
+}
+
+/* ── RESPONSIVE HEADER ACTIONS ──────────────────── */
+.header-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.page-title {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
+}
+@media (max-width: 640px) {
+  .page-title {
+    font-size: 22px;
+  }
+  .header-actions {
+    gap: 8px;
   }
 }

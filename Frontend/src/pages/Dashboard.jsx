@@ -34,7 +34,7 @@ export default function Dashboard() {
   return (
     <div className="page-transition">
       {/* KPI Cards */}
-      <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:20, marginBottom:20 }}>
+      <div className="grid-3" style={{ marginBottom: 20 }}>
         {[
           { label:'Total Spent',  value:summary?.totalExpenses||0, color:'var(--red)',   delay:'delay-0' },
           { label:'Total Earned', value:summary?.totalIncome||0,   color:'var(--green)', delay:'delay-1' },
@@ -52,7 +52,7 @@ export default function Dashboard() {
       </div>
 
       {/* Donut + Alerts */}
-      <div style={{ display:'grid', gridTemplateColumns:'60% 1fr', gap:20, marginBottom:20 }}>
+      <div className="grid-chart" style={{ marginBottom: 20 }}>
         <div className="card anim-fade-up delay-3" style={{ padding:24 }}>
           <h2 style={{ fontFamily:'var(--font-display)', fontSize:18, fontWeight:600, marginBottom:20 }}>
             Spending by Category
@@ -123,24 +123,25 @@ export default function Dashboard() {
           <h2 style={{ fontFamily:'var(--font-display)', fontSize:18, fontWeight:600 }}>Recent Transactions</h2>
           <a href="/transactions" style={{ color:'var(--green)', fontSize:13, textDecoration:'none' }}>View All</a>
         </div>
-        <div className="tbl-head" style={{ gridTemplateColumns:'80px 1fr 130px 130px 120px' }}>
-          {['DATE','DESCRIPTION','CATEGORY','ACCOUNT','AMOUNT'].map(h => <span key={h}>{h}</span>)}
+        <div className="tbl-scroll-wrap">
+          <div className="tbl-head" style={{ gridTemplateColumns:'80px 1fr 120px 100px', minWidth: 480 }}>
+            {['DATE','DESCRIPTION','CATEGORY','AMOUNT'].map(h => <span key={h}>{h}</span>)}
+          </div>
+          {recentTransactions.length === 0
+            ? <Empty msg="No transactions yet. Add your first one!" />
+            : recentTransactions.map((tx, i) => (
+              <div key={tx._id} className={`tbl-row anim-fade-up delay-${Math.min(i,8)}`}
+                style={{ gridTemplateColumns:'80px 1fr 120px 100px', minWidth: 480 }}>
+                <span style={{ color:'var(--muted)', fontSize:13 }}>{formatDate(tx.date)}</span>
+                <span className="text-ellipsis" style={{ fontSize:14 }}>{tx.description}</span>
+                <span><span className={`badge ${['Income','Investment'].includes(tx.category)?'badge-green':''}`}>{tx.category}</span></span>
+                <span style={{ textAlign:'right', fontFamily:'var(--font-display)', fontWeight:600,
+                  color: tx.type==='income' ? 'var(--green)' : 'var(--red)' }}>
+                  {tx.type==='income' ? '+' : '-'}{formatINR(tx.amount)}
+                </span>
+              </div>
+            ))}
         </div>
-        {recentTransactions.length === 0
-          ? <Empty msg="No transactions yet. Add your first one!" />
-          : recentTransactions.map((tx, i) => (
-            <div key={tx._id} className={`tbl-row anim-fade-up delay-${Math.min(i,8)}`}
-              style={{ gridTemplateColumns:'80px 1fr 130px 130px 120px' }}>
-              <span style={{ color:'var(--muted)', fontSize:13 }}>{formatDate(tx.date)}</span>
-              <span style={{ fontSize:14 }}>{tx.description}</span>
-              <span><span className={`badge ${['Income','Investment'].includes(tx.category)?'badge-green':''}`}>{tx.category}</span></span>
-              <span style={{ color:'var(--secondary)', fontSize:13 }}>{tx.accountId?.name||'—'}</span>
-              <span style={{ textAlign:'right', fontFamily:'var(--font-display)', fontWeight:600,
-                color: tx.type==='income' ? 'var(--green)' : 'var(--red)' }}>
-                {tx.type==='income' ? '+' : '-'}{formatINR(tx.amount)}
-              </span>
-            </div>
-          ))}
       </div>
     </div>
   );
