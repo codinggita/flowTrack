@@ -1,5 +1,6 @@
 import { NavLink, useNavigate } from 'react-router-dom';
 import Logo from '../ui/Logo';
+import { useAuth } from '../../hooks/useAuth';
 
 const navItems = [
   {
@@ -81,6 +82,7 @@ const navItems = [
 
 export default function Sidebar() {
   const navigate = useNavigate();
+  const { logout } = useAuth();
 
   return (
     <nav
@@ -132,10 +134,12 @@ export default function Sidebar() {
         <div style={{ height: '1px', background: 'var(--border)', margin: '8px 0' }} />
 
         {/* Support */}
-        <a
-          href="#"
-          className="nav-item anim-slide-in delay-6"
-          onClick={(e) => e.preventDefault()}
+        <NavLink
+          to="/support"
+          className={({ isActive }) => `nav-item anim-slide-in delay-6 ${isActive ? 'active' : ''}`}
+          onClick={() => {
+            if (window.innerWidth <= 1024) setMobileOpen(false);
+          }}
         >
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
             <circle cx="12" cy="12" r="10" />
@@ -143,12 +147,15 @@ export default function Sidebar() {
             <path d="M12 17h.01" />
           </svg>
           <span>Support</span>
-        </a>
+        </NavLink>
 
         {/* Logout */}
         <button
           className="nav-item anim-slide-in delay-7"
-          onClick={() => navigate('/login')}
+          onClick={() => {
+            logout();
+            navigate('/login');
+          }}
           style={{ background: 'none', border: 'none', width: '100%', textAlign: 'left', font: 'inherit' }}
         >
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
