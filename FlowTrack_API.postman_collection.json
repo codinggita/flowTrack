@@ -1,0 +1,515 @@
+{
+  "info": {
+    "name": "FlowTrack API",
+    "description": "Complete API documentation for FlowTrack — Personal Finance Management Platform.\n\n**Base URL:** `https://flowtrack-d4d1.onrender.com`\n\n**Auth:** All protected routes require `Authorization: Bearer {{token}}` header.\n\nSteps:\n1. Run `POST /api/auth/register` or `POST /api/auth/login`\n2. Copy the `token` from the response\n3. Set it as the `token` variable in your environment",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "https://flowtrack-d4d1.onrender.com", "type": "string" },
+    { "key": "token",    "value": "",                                      "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "🔐 Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/auth/register", "host": ["{{base_url}}"], "path": ["api","auth","register"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"Swaraj Prajapati\",\n  \"email\": \"swaraj@example.com\",\n  \"password\": \"Password123\",\n  \"phone\": \"+91 98765 43210\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": ["const res = pm.response.json();", "if (res.data && res.data.token) {", "  pm.collectionVariables.set('token', res.data.token);", "  console.log('Token saved:', res.data.token);", "}"],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/auth/login", "host": ["{{base_url}}"], "path": ["api","auth","login"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"swaraj@example.com\",\n  \"password\": \"Password123\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Google Auth",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/auth/google", "host": ["{{base_url}}"], "path": ["api","auth","google"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"credential\": \"<google_id_token_here>\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Forgot Password",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/auth/forgot-password", "host": ["{{base_url}}"], "path": ["api","auth","forgot-password"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"swaraj@example.com\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Reset Password",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/auth/reset-password/:token", "host": ["{{base_url}}"], "path": ["api","auth","reset-password",":token"], "variable": [{ "key": "token", "value": "<reset_token_from_email>" }] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"password\": \"NewPassword123\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Me (Profile)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/api/auth/me", "host": ["{{base_url}}"], "path": ["api","auth","me"] }
+          }
+        },
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/api/health", "host": ["{{base_url}}"], "path": ["api","health"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🏦 Accounts",
+      "item": [
+        {
+          "name": "Get All Accounts",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/api/accounts", "host": ["{{base_url}}"], "path": ["api","accounts"] }
+          }
+        },
+        {
+          "name": "Create Account",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/accounts", "host": ["{{base_url}}"], "path": ["api","accounts"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"HDFC Savings\",\n  \"type\": \"BANK\",\n  \"balance\": 50000,\n  \"color\": \"#1a211d\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Update Account",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/accounts/:id", "host": ["{{base_url}}"], "path": ["api","accounts",":id"], "variable": [{ "key": "id", "value": "<account_id>" }] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"HDFC Savings Updated\",\n  \"balance\": 75000\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete Account",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/api/accounts/:id", "host": ["{{base_url}}"], "path": ["api","accounts",":id"], "variable": [{ "key": "id", "value": "<account_id>" }] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "💸 Transactions",
+      "item": [
+        {
+          "name": "Get Transactions",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{base_url}}/api/transactions?page=1&limit=10&type=expense&category=Food",
+              "host": ["{{base_url}}"],
+              "path": ["api","transactions"],
+              "query": [
+                { "key": "page",     "value": "1" },
+                { "key": "limit",    "value": "10" },
+                { "key": "type",     "value": "expense",  "description": "income | expense" },
+                { "key": "category", "value": "Food",     "description": "Food, Transport, Shopping, etc." },
+                { "key": "search",   "value": "",         "disabled": true }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Transaction",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/transactions", "host": ["{{base_url}}"], "path": ["api","transactions"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Swiggy Order\",\n  \"amount\": 350,\n  \"type\": \"expense\",\n  \"category\": \"Food\",\n  \"accountId\": \"<account_id>\",\n  \"date\": \"2026-04-30\",\n  \"notes\": \"Dinner\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Update Transaction",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/transactions/:id", "host": ["{{base_url}}"], "path": ["api","transactions",":id"], "variable": [{ "key": "id", "value": "<transaction_id>" }] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Swiggy Order Updated\",\n  \"amount\": 400\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete Transaction",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/api/transactions/:id", "host": ["{{base_url}}"], "path": ["api","transactions",":id"], "variable": [{ "key": "id", "value": "<transaction_id>" }] }
+          }
+        },
+        {
+          "name": "Upload CSV",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/api/transactions/csv-upload", "host": ["{{base_url}}"], "path": ["api","transactions","csv-upload"] },
+            "body": {
+              "mode": "formdata",
+              "formdata": [{ "key": "file", "type": "file", "description": "CSV file with columns: date, description, amount, type, category" }]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "📊 Reports",
+      "item": [
+        {
+          "name": "Summary",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/api/reports/summary?period=month", "host": ["{{base_url}}"], "path": ["api","reports","summary"], "query": [{ "key": "period", "value": "month", "description": "month | year" }] }
+          }
+        },
+        {
+          "name": "Spending by Category",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/api/reports/spending-by-category", "host": ["{{base_url}}"], "path": ["api","reports","spending-by-category"] }
+          }
+        },
+        {
+          "name": "Spending by Merchant",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/api/reports/spending-by-merchant", "host": ["{{base_url}}"], "path": ["api","reports","spending-by-merchant"] }
+          }
+        },
+        {
+          "name": "Cash Flow",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/api/reports/cash-flow", "host": ["{{base_url}}"], "path": ["api","reports","cash-flow"] }
+          }
+        },
+        {
+          "name": "Top Categories",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/api/reports/top-categories", "host": ["{{base_url}}"], "path": ["api","reports","top-categories"] }
+          }
+        },
+        {
+          "name": "Dashboard Stats",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/api/reports/dashboard-stats", "host": ["{{base_url}}"], "path": ["api","reports","dashboard-stats"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🔁 Recurring",
+      "item": [
+        {
+          "name": "Get Subscriptions",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/api/recurring", "host": ["{{base_url}}"], "path": ["api","recurring"] }
+          }
+        },
+        {
+          "name": "Create Subscription",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/recurring", "host": ["{{base_url}}"], "path": ["api","recurring"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Netflix\",\n  \"amount\": 649,\n  \"billingCycle\": \"monthly\",\n  \"nextBillingDate\": \"2026-05-15\",\n  \"category\": \"Subscriptions\",\n  \"accountId\": \"<account_id>\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Update Subscription",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/recurring/:id", "host": ["{{base_url}}"], "path": ["api","recurring",":id"], "variable": [{ "key": "id", "value": "<subscription_id>" }] },
+            "body": { "mode": "raw", "raw": "{\n  \"amount\": 799\n}" }
+          }
+        },
+        {
+          "name": "Delete Subscription",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/api/recurring/:id", "host": ["{{base_url}}"], "path": ["api","recurring",":id"], "variable": [{ "key": "id", "value": "<subscription_id>" }] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "⚙️ Settings",
+      "item": [
+        {
+          "name": "Get Profile",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/api/settings/profile", "host": ["{{base_url}}"], "path": ["api","settings","profile"] }
+          }
+        },
+        {
+          "name": "Update Profile",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/settings/profile", "host": ["{{base_url}}"], "path": ["api","settings","profile"] },
+            "body": { "mode": "raw", "raw": "{\n  \"fullName\": \"Swaraj Prajapati\",\n  \"phone\": \"+91 98765 43210\"\n}" }
+          }
+        },
+        {
+          "name": "Change Password",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/settings/password", "host": ["{{base_url}}"], "path": ["api","settings","password"] },
+            "body": { "mode": "raw", "raw": "{\n  \"currentPassword\": \"OldPassword123\",\n  \"newPassword\": \"NewPassword456\"\n}" }
+          }
+        },
+        {
+          "name": "Update Notifications",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/settings/notifications", "host": ["{{base_url}}"], "path": ["api","settings","notifications"] },
+            "body": { "mode": "raw", "raw": "{\n  \"newTransaction\": true,\n  \"weeklyReport\": true,\n  \"subRenewal\": false\n}" }
+          }
+        },
+        {
+          "name": "Toggle 2FA",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/api/settings/2fa", "host": ["{{base_url}}"], "path": ["api","settings","2fa"] }
+          }
+        },
+        {
+          "name": "Get Sessions",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/api/settings/sessions", "host": ["{{base_url}}"], "path": ["api","settings","sessions"] }
+          }
+        },
+        {
+          "name": "Revoke Session",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/api/settings/sessions/:sessionId/revoke", "host": ["{{base_url}}"], "path": ["api","settings","sessions",":sessionId","revoke"], "variable": [{ "key": "sessionId", "value": "<session_id>" }] }
+          }
+        },
+        {
+          "name": "Revoke All Other Sessions",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/api/settings/sessions/revoke-all", "host": ["{{base_url}}"], "path": ["api","settings","sessions","revoke-all"] }
+          }
+        },
+        {
+          "name": "Get Activity Log",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/api/settings/activity?limit=20", "host": ["{{base_url}}"], "path": ["api","settings","activity"], "query": [{ "key": "limit", "value": "20" }] }
+          }
+        },
+        {
+          "name": "Get Login History",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/api/settings/login-history", "host": ["{{base_url}}"], "path": ["api","settings","login-history"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🔔 Notifications",
+      "item": [
+        {
+          "name": "Get All Notifications",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/api/notifications", "host": ["{{base_url}}"], "path": ["api","notifications"] }
+          }
+        },
+        {
+          "name": "Get Unread Count",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/api/notifications/unread-count", "host": ["{{base_url}}"], "path": ["api","notifications","unread-count"] }
+          }
+        },
+        {
+          "name": "Mark One as Read",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/api/notifications/:id/read", "host": ["{{base_url}}"], "path": ["api","notifications",":id","read"], "variable": [{ "key": "id", "value": "<notification_id>" }] }
+          }
+        },
+        {
+          "name": "Mark All as Read",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/api/notifications/mark-all-read", "host": ["{{base_url}}"], "path": ["api","notifications","mark-all-read"] }
+          }
+        },
+        {
+          "name": "Delete Notification",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/api/notifications/:id", "host": ["{{base_url}}"], "path": ["api","notifications",":id"], "variable": [{ "key": "id", "value": "<notification_id>" }] }
+          }
+        },
+        {
+          "name": "Clear All Notifications",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/api/notifications/clear-all", "host": ["{{base_url}}"], "path": ["api","notifications","clear-all"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🎫 Support",
+      "item": [
+        {
+          "name": "Get All Tickets",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/api/support", "host": ["{{base_url}}"], "path": ["api","support"] }
+          }
+        },
+        {
+          "name": "Get Support Stats",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/api/support/stats", "host": ["{{base_url}}"], "path": ["api","support","stats"] }
+          }
+        },
+        {
+          "name": "Create Ticket",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/support", "host": ["{{base_url}}"], "path": ["api","support"] },
+            "body": { "mode": "raw", "raw": "{\n  \"subject\": \"Cannot add transaction\",\n  \"message\": \"I am getting an error when I try to add a new transaction.\",\n  \"category\": \"bug\",\n  \"priority\": \"high\"\n}" }
+          }
+        },
+        {
+          "name": "Get Single Ticket",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/api/support/:id", "host": ["{{base_url}}"], "path": ["api","support",":id"], "variable": [{ "key": "id", "value": "<ticket_id>" }] }
+          }
+        },
+        {
+          "name": "Reply to Ticket",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/support/:id/reply", "host": ["{{base_url}}"], "path": ["api","support",":id","reply"], "variable": [{ "key": "id", "value": "<ticket_id>" }] },
+            "body": { "mode": "raw", "raw": "{\n  \"message\": \"I have tried clearing cache but still getting the error.\"\n}" }
+          }
+        },
+        {
+          "name": "Rate Ticket",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/support/:id/rate", "host": ["{{base_url}}"], "path": ["api","support",":id","rate"], "variable": [{ "key": "id", "value": "<ticket_id>" }] },
+            "body": { "mode": "raw", "raw": "{\n  \"rating\": 5,\n  \"feedback\": \"Very helpful support!\"\n}" }
+          }
+        },
+        {
+          "name": "Close Ticket",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/api/support/:id/close", "host": ["{{base_url}}"], "path": ["api","support",":id","close"], "variable": [{ "key": "id", "value": "<ticket_id>" }] }
+          }
+        }
+      ]
+    }
+  ]
+}

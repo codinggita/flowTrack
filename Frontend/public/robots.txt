@@ -14,4 +14,4 @@ Disallow: /recurring
 Disallow: /settings
 Disallow: /api/
 
-Sitemap: https://flowtrack.in/sitemap.xml
+Sitemap: https://flow-track-tawny.vercel.app/sitemap.xml

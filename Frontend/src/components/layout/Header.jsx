@@ -180,7 +180,7 @@ export default function Header({ setMobileOpen }) {
           onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
         >
           {user?.avatar ? (
-            <img src={user.avatar} alt="Avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            <img src={user.avatar} alt="FlowTrack User Profile Avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           ) : (
             user?.initials || 'U'
           )}

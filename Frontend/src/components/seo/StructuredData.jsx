@@ -3,20 +3,20 @@
 export default function StructuredData() {
   const websiteSchema = {
     '@context':'https://schema.org','@type':'WebApplication',
-    name:'FlowTrack',url:'https://flowtrack.in',
+    name:'FlowTrack',url:'https://flow-track-tawny.vercel.app',
     description:'Personal finance tracker for India. Track expenses, accounts, UPI, subscriptions.',
     applicationCategory:'FinanceApplication',operatingSystem:'Web, iOS, Android',
     offers:{'@type':'Offer',price:'0',priceCurrency:'INR'},
-    author:{'@type':'Organization',name:'FlowTrack',url:'https://flowtrack.in'},
+    author:{'@type':'Organization',name:'FlowTrack',url:'https://flow-track-tawny.vercel.app'},
     featureList:['Track income and expenses','Manage bank accounts, UPI, credit cards',
       'Subscription tracking and renewal alerts','Financial reports and charts',
       'Indian Rupee (INR) support','CSV import for bulk transactions','Hindi language support'],
-    inLanguage:['en-IN','hi-IN'],countryOfOrigin:'IN',screenshot:'https://flowtrack.in/og-image.png',
+    inLanguage:['en-IN','hi-IN'],countryOfOrigin:'IN',screenshot:'https://flow-track-tawny.vercel.app/og-image.png',
   };
 
   const orgSchema = {
     '@context':'https://schema.org','@type':'Organization',name:'FlowTrack',
-    url:'https://flowtrack.in',logo:'https://flowtrack.in/logo.png',
+    url:'https://flow-track-tawny.vercel.app',logo:'https://flow-track-tawny.vercel.app/logo.png',
     contactPoint:{'@type':'ContactPoint',email:'support@flowtrack.in',
       contactType:'customer support',availableLanguage:['English','Hindi']},
   };
