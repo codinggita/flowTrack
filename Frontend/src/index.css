@@ -334,8 +334,182 @@ body {
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
+
 .spinner-sm {
   width: 18px;
   height: 18px;
   border-width: 2px;
+}
+
+/* ── RESPONSIVE LAYOUT ─────────────────────────── */
+.main-content {
+  margin-left: 240px;
+  transition: margin-left 0.3s ease;
+}
+.sidebar-container {
+  transform: translateX(0);
+  transition: transform 0.3s cubic-bezier(0.22,1,0.36,1);
+  z-index: 100;
+}
+.main-content-pad {
+  padding: 32px 40px;
+}
+.header-pad {
+  padding: 0 40px;
+}
+.header-menu-btn {
+  display: none;
+}
+
+/* Tablet (max 1024px) */
+@media (max-width: 1024px) {
+  .main-content {
+    margin-left: 0 !important;
+  }
+  .sidebar-container {
+    transform: translateX(-100%);
+  }
+  .sidebar-container.open {
+    transform: translateX(0);
+  }
+  .main-content-pad {
+    padding: 24px 24px;
+  }
+  .header-pad {
+    padding: 0 24px;
+  }
+  .header-search {
+    display: none;
+  }
+  .header-menu-btn {
+    display: flex !important;
+  }
+  .modal-box {
+    max-width: 95vw;
+    padding: 24px;
+  }
+}
+
+/* Mobile (max 640px) */
+@media (max-width: 640px) {
+  .main-content-pad {
+    padding: 16px;
+  }
+  .header-pad {
+    padding: 0 16px;
+  }
+  .modal-box {
+    padding: 20px 16px;
+    border-radius: 12px;
+  }
+  .tbl-head,
+  .tbl-row {
+    font-size: 12px;
+    padding: 0 4px;
+    min-height: 40px;
+  }
+  .badge {
+    font-size: 9px;
+    padding: 1px 6px;
+  }
+}
+
+/* ── RESPONSIVE GRIDS ───────────────────────────── */
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.grid-chart {
+  display: grid;
+  grid-template-columns: 60% 1fr;
+  gap: 20px;
+}
+.session-meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 4px 16px;
+  margin-top: 6px;
+}
+
+@media (max-width: 1024px) {
+  .grid-chart {
+    grid-template-columns: 1fr;
+  }
+  .session-meta {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .grid-2 {
+    grid-template-columns: 1fr;
+  }
+  .grid-3 {
+    grid-template-columns: 1fr 1fr;
+  }
+  .session-meta {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 500px) {
+  .grid-3 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── RESPONSIVE TABLES ──────────────────────────── */
+.tbl-mobile-hide {
+  display: table-cell;
+}
+.tbl-scroll-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (max-width: 768px) {
+  .tbl-mobile-hide {
+    display: none !important;
+  }
+}
+
+/* ── OVERFLOW HELPERS ───────────────────────────── */
+.text-ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+.word-break {
+  word-break: break-all;
+  overflow-wrap: anywhere;
+}
+
+/* ── RESPONSIVE HEADER ACTIONS ──────────────────── */
+.header-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.page-title {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
+}
+@media (max-width: 640px) {
+  .page-title {
+    font-size: 22px;
+  }
+  .header-actions {
+    gap: 8px;
+  }
 }

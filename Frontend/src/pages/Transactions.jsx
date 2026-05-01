@@ -45,19 +45,17 @@ export default function Transactions() {
 
   return (
     <div className="page-transition">
-      <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:24 }}>
-        <h1 style={{ fontFamily:'var(--font-display)', fontSize:28, fontWeight:700 }}>Transactions</h1>
-        <div style={{ display:'flex', gap:12 }}>
-          <button className="btn-primary" onClick={() => setModalOpen(true)}
-            style={{ height:40, padding:'0 20px', fontSize:14 }}>
-            + Add Transaction
-          </button>
-        </div>
+      <div className="header-actions">
+        <h1 className="page-title">Transactions</h1>
+        <button className="btn-primary" onClick={() => setModalOpen(true)}
+          style={{ height: 40, padding: '0 20px', fontSize: 14, flexShrink: 0 }}>
+          + Add Transaction
+        </button>
       </div>
 
       {/* Filters */}
-      <div className="card" style={{ padding:20, marginBottom:20 }}>
-        <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:16, alignItems:'end' }}>
+      <div className="card" style={{ padding: 20, marginBottom: 20 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 16, alignItems: 'end' }}>
           <div>
             <label className="label-text">Category</label>
             <select className="input-field" value={filters.category}
@@ -84,54 +82,56 @@ export default function Transactions() {
           </div>
           <div>
             <button className="btn-ghost" onClick={() => setFilters({ period:'',category:'',type:'',search:'' })}
-              style={{ height:40, padding:'0 16px', fontSize:13, width:'100%' }}>Reset Filters</button>
+              style={{ height: 40, padding: '0 16px', fontSize: 13, width: '100%' }}>Reset</button>
           </div>
         </div>
       </div>
 
       {/* Table */}
       <div className="card">
-        <div className="tbl-head" style={{ gridTemplateColumns:'130px 1fr 130px 130px 140px', padding:'12px 16px' }}>
-          {['Date','Description','Category','Account','Amount'].map(h => <span key={h}>{h}</span>)}
-        </div>
-        {loading ? (
-          <div style={{ padding:'40px 0', textAlign:'center', color:'var(--muted)' }}>Loading...</div>
-        ) : transactions.length === 0 ? (
-          <div style={{ padding:'40px 0', textAlign:'center', color:'var(--muted)' }}>No transactions found.</div>
-        ) : transactions.map((tx, i) => (
-          <div key={tx._id} className={`tbl-row anim-fade-up delay-${Math.min(i,8)}`}
-            style={{ gridTemplateColumns:'130px 1fr 130px 130px 140px', padding:'0 16px' }}>
-            <span style={{ color:'var(--muted)', fontSize:13 }}>{formatDate(tx.date,'full')}</span>
-            <span style={{ fontSize:14 }}>{tx.description}</span>
-            <span><span className={`badge ${['Income','Investment'].includes(tx.category)?'badge-green':''}`}>{tx.category}</span></span>
-            <span style={{ color:'var(--secondary)', fontSize:13 }}>{tx.accountId?.name||'—'}</span>
-            <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center' }}>
-              <span style={{ fontFamily:'var(--font-display)', fontWeight:600,
-                color: tx.type==='income' ? 'var(--green)' : 'var(--red)' }}>
-                {tx.type==='income' ? '+ ' : '- '}{formatINR(tx.amount)}
-              </span>
-              <button onClick={() => handleDelete(tx._id)}
-                style={{ background:'none', border:'none', color:'var(--muted)', cursor:'pointer', fontSize:16, padding:'0 4px' }}>×</button>
-            </div>
+        <div className="tbl-scroll-wrap">
+          <div className="tbl-head" style={{ gridTemplateColumns: '100px 1fr 120px 100px', padding: '12px 16px', minWidth: 520 }}>
+            {['Date','Description','Category','Amount'].map(h => <span key={h}>{h}</span>)}
           </div>
-        ))}
-        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', padding:'16px', borderTop:'1px solid var(--border)' }}>
-          <span style={{ color:'var(--muted)', fontSize:13 }}>
+          {loading ? (
+            <div style={{ padding: '40px 0', textAlign: 'center', color: 'var(--muted)' }}>Loading...</div>
+          ) : transactions.length === 0 ? (
+            <div style={{ padding: '40px 0', textAlign: 'center', color: 'var(--muted)' }}>No transactions found.</div>
+          ) : transactions.map((tx, i) => (
+            <div key={tx._id} className={`tbl-row anim-fade-up delay-${Math.min(i,8)}`}
+              style={{ gridTemplateColumns: '100px 1fr 120px 100px', padding: '0 16px', minWidth: 520 }}>
+              <span style={{ color: 'var(--muted)', fontSize: 13 }}>{formatDate(tx.date,'full')}</span>
+              <span className="text-ellipsis" style={{ fontSize: 14 }}>{tx.description}</span>
+              <span><span className={`badge ${['Income','Investment'].includes(tx.category)?'badge-green':''}`}>{tx.category}</span></span>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ fontFamily: 'var(--font-display)', fontWeight: 600,
+                  color: tx.type==='income' ? 'var(--green)' : 'var(--red)' }}>
+                  {tx.type==='income' ? '+ ' : '- '}{formatINR(tx.amount)}
+                </span>
+                <button onClick={() => handleDelete(tx._id)}
+                  style={{ background: 'none', border: 'none', color: 'var(--muted)', cursor: 'pointer', fontSize: 16, padding: '0 4px' }}>×</button>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px', borderTop: '1px solid var(--border)', flexWrap: 'wrap', gap: 8 }}>
+          <span style={{ color: 'var(--muted)', fontSize: 13 }}>
             Showing {transactions.length} of {pagination.total} entries
           </span>
-          <div style={{ display:'flex', gap:4 }}>
-            <button className="btn-ghost" style={{ width:32, height:32, padding:0, fontSize:14 }}
+          <div style={{ display: 'flex', gap: 4 }}>
+            <button className="btn-ghost" style={{ width: 32, height: 32, padding: 0, fontSize: 14 }}
               disabled={pagination.page===1} onClick={() => setPagination(p=>({...p,page:p.page-1}))}>‹</button>
             {Array.from({ length: Math.min(pagination.totalPages,5) }, (_,i) => i+1).map(p => (
               <button key={p} className={pagination.page===p ? 'btn-primary' : 'btn-ghost'}
-                style={{ width:32, height:32, padding:0, fontSize:13 }}
+                style={{ width: 32, height: 32, padding: 0, fontSize: 13 }}
                 onClick={() => setPagination(prev=>({...prev,page:p}))}>{p}</button>
             ))}
-            <button className="btn-ghost" style={{ width:32, height:32, padding:0, fontSize:14 }}
+            <button className="btn-ghost" style={{ width: 32, height: 32, padding: 0, fontSize: 14 }}
               disabled={pagination.page>=pagination.totalPages} onClick={() => setPagination(p=>({...p,page:p.page+1}))}>›</button>
           </div>
         </div>
       </div>
+</div>
 
       {modalOpen && <AddTransactionModal accounts={accounts} onClose={() => setModalOpen(false)} onSuccess={handleAdd} />}
     </div>

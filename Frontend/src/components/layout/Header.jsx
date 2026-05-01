@@ -11,7 +11,7 @@ const routeNames = {
   '/settings': 'Settings',
 };
 
-export default function Header() {
+export default function Header({ setMobileOpen }) {
   const location = useLocation();
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -20,26 +20,43 @@ export default function Header() {
 
   return (
     <header
+      className="header-pad"
       style={{
         height: '60px',
         background: 'var(--nav)',
         borderBottom: '1px solid var(--border)',
         display: 'flex',
         alignItems: 'center',
-        padding: '0 40px',
         gap: '16px',
         position: 'sticky',
         top: 0,
         zIndex: 50,
       }}
     >
+      {/* Hamburger menu for mobile */}
+      <button 
+        className="header-menu-btn"
+        onClick={() => setMobileOpen(true)}
+        style={{
+          background: 'none', border: 'none', cursor: 'pointer',
+          color: 'var(--text)', padding: '4px', display: 'none',
+          alignItems: 'center', justifyContent: 'center'
+        }}
+      >
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+
       {/* Route name */}
       <span style={{ fontSize: '15px', fontWeight: 600, color: 'var(--green)' }}>{currentRoute}</span>
 
       {/* Right section */}
       <div style={{ marginLeft: 'auto', display: 'flex', gap: '12px', alignItems: 'center' }}>
         {/* Search bar */}
-        <div style={{ position: 'relative' }}>
+        <div className="header-search" style={{ position: 'relative' }}>
           <svg
             width="16" height="16" viewBox="0 0 24 24" fill="none"
             stroke="var(--muted)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"

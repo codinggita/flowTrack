@@ -40,13 +40,13 @@ export default function Accounts() {
 
   return (
     <div className="page-transition">
-      <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:24 }}>
+      <div className="header-actions">
         <div>
-          <h1 style={{ fontFamily:'var(--font-display)', fontSize:28, fontWeight:700 }}>Accounts</h1>
-          <p style={{ color:'var(--muted)', marginTop:4, fontSize:14 }}>Manage your financial accounts</p>
+          <h1 className="page-title">Accounts</h1>
+          <p style={{ color: 'var(--muted)', marginTop: 4, fontSize: 14 }}>Manage your financial accounts</p>
         </div>
         <button className="btn-primary" onClick={() => setModalOpen(true)}
-          style={{ height:40, padding:'0 20px', fontSize:14 }}>+ Add Account</button>
+          style={{ height: 40, padding: '0 20px', fontSize: 14, flexShrink: 0 }}>+ Add Account</button>
       </div>
 
       {/* Net Worth Card */}

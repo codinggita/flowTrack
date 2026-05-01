@@ -314,15 +314,17 @@ export default function Settings() {
   ];
 
   return (
-    <div className="page-transition" style={{ maxWidth:960, margin:'0 auto' }}>
+    <div className="page-transition" style={{ maxWidth: 960, margin: '0 auto' }}>
       <Toast msg={toast.msg} type={toast.type} />
 
       {/* Page Header */}
-      <div style={{ marginBottom:28 }}>
-        <h1 style={{ fontFamily:'var(--font-display)', fontSize:28, fontWeight:700 }}>Settings</h1>
-        <p style={{ color:'var(--muted)', marginTop:4, fontSize:14 }}>
-          Manage your profile, security, sessions and preferences.
-        </p>
+      <div className="header-actions" style={{ marginBottom: 28 }}>
+        <div>
+          <h1 className="page-title">Settings</h1>
+          <p style={{ color: 'var(--muted)', marginTop: 4, fontSize: 14 }}>
+            Manage your profile, security, sessions and preferences.
+          </p>
+        </div>
       </div>
 
       {/* Tab Bar */}
@@ -357,7 +359,7 @@ export default function Settings() {
 
       {/* ── TAB: PROFILE ─────────────────────────────────────────────── */}
       {activeTab === 'profile' && (
-        <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:20 }}>
+        <div className="grid-2">
           {/* Profile Info */}
           <Card>
             <SectionTitle>Profile Information</SectionTitle>
@@ -484,7 +486,7 @@ export default function Settings() {
 
       {/* ── TAB: SECURITY ────────────────────────────────────────────── */}
       {activeTab === 'security' && (
-        <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:20 }}>
+        <div className="grid-2">
           {/* Change Password */}
           <Card>
             <SectionTitle>Change Password</SectionTitle>
@@ -642,7 +644,7 @@ export default function Settings() {
                       </span>
                     )}
                   </div>
-                  <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gap:'4px 16px', marginTop:6 }}>
+                  <div className="session-meta">
                     {[
                       { icon:'📍', label: session.location?.city || 'Unknown location' },
                       { icon:'🌐', label: session.ipAddress || '—' },
