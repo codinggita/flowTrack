@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { api } from '../services/api';
 import { emitDataChange } from '../hooks/useChartRefresh';
 import { formatINR, formatDate } from '../utils/format';
+import VirtualTransactionList from '../components/ui/VirtualTransactionList';
 
 export default function Transactions() {
   const [transactions, setTransactions] = useState([]);
@@ -36,12 +37,12 @@ export default function Transactions() {
     emitDataChange();
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = useCallback(async (id) => {
     if (!confirm('Delete this transaction?')) return;
     await api.deleteTransaction(id);
     fetchTransactions();
     emitDataChange();
-  };
+  }, [fetchTransactions]);
 
   return (
     <div className="page-transition">
@@ -95,24 +96,14 @@ export default function Transactions() {
           </div>
           {loading ? (
             <div style={{ padding: '40px 0', textAlign: 'center', color: 'var(--muted)' }}>Loading...</div>
-          ) : transactions.length === 0 ? (
-            <div style={{ padding: '40px 0', textAlign: 'center', color: 'var(--muted)' }}>No transactions found.</div>
-          ) : transactions.map((tx, i) => (
-            <div key={tx._id} className={`tbl-row anim-fade-up delay-${Math.min(i,8)}`}
-              style={{ gridTemplateColumns: '100px 1fr 120px 100px', padding: '0 16px', minWidth: 520 }}>
-              <span style={{ color: 'var(--muted)', fontSize: 13 }}>{formatDate(tx.date,'full')}</span>
-              <span className="text-ellipsis" style={{ fontSize: 14 }}>{tx.description}</span>
-              <span><span className={`badge ${['Income','Investment'].includes(tx.category)?'badge-green':''}`}>{tx.category}</span></span>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ fontFamily: 'var(--font-display)', fontWeight: 600,
-                  color: tx.type==='income' ? 'var(--green)' : 'var(--red)' }}>
-                  {tx.type==='income' ? '+ ' : '- '}{formatINR(tx.amount)}
-                </span>
-                <button onClick={() => handleDelete(tx._id)}
-                  style={{ background: 'none', border: 'none', color: 'var(--muted)', cursor: 'pointer', fontSize: 16, padding: '0 4px' }}>×</button>
-              </div>
-            </div>
-          ))}
+          ) : (
+            <VirtualTransactionList
+              transactions={transactions}
+              onDelete={handleDelete}
+              formatINR={formatINR}
+              formatDate={formatDate}
+            />
+          )}
         </div>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px', borderTop: '1px solid var(--border)', flexWrap: 'wrap', gap: 8 }}>
           <span style={{ color: 'var(--muted)', fontSize: 13 }}>
@@ -131,7 +122,6 @@ export default function Transactions() {
           </div>
         </div>
       </div>
-</div>
 
       {modalOpen && <AddTransactionModal accounts={accounts} onClose={() => setModalOpen(false)} onSuccess={handleAdd} />}
     </div>

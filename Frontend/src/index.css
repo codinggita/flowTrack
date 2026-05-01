@@ -513,3 +513,46 @@ body {
     gap: 8px;
   }
 }
+
+/* Light theme card overrides */
+[data-theme="light"] .card {
+  box-shadow: var(--shadow);
+}
+
+[data-theme="light"] body {
+  background: var(--bg);
+  color: var(--text);
+}
+
+[data-theme="light"] .input-field {
+  background: #ffffff;
+  color: var(--text);
+}
+
+[data-theme="light"] .btn-ghost {
+  color: var(--text);
+  border-color: var(--border);
+}
+
+[data-theme="light"] .nav-item {
+  color: var(--muted);
+}
+
+[data-theme="light"] .nav-item.active {
+  color: var(--green);
+  background: rgba(0,168,120,0.08);
+}
+
+[data-theme="light"] .tbl-row:hover {
+  background: var(--card-high);
+}
+
+/* Shimmer for light theme */
+[data-theme="light"] .shimmerLoad {
+  background-image: linear-gradient(
+    90deg,
+    #f0f4f2 0%,
+    #e0e8e4 50%,
+    #f0f4f2 100%
+  );
+}
