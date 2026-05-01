@@ -3,8 +3,7 @@ import { List } from 'react-window';
 
 const ROW_HEIGHT = 52;
 
-const TransactionRow = memo(({ index, style, data }) => {
-  const { transactions, onDelete, formatINR, formatDate } = data;
+const TransactionRow = memo(({ index, style, transactions, onDelete, formatINR, formatDate }) => {
   const tx = transactions[index];
   if (!tx) return <div style={style} />;
 
@@ -61,14 +60,12 @@ export default function VirtualTransactionList({ transactions, onDelete, formatI
 
   return (
     <List
-      height={height}
-      itemCount={transactions.length}
-      itemSize={ROW_HEIGHT}
-      itemData={itemData}
+      style={{ height, overflowX:'hidden' }}
+      rowCount={transactions.length}
+      rowHeight={ROW_HEIGHT}
+      rowProps={itemData}
       overscanCount={5}
-      style={{ overflowX:'hidden' }}
-    >
-      {TransactionRow}
-    </List>
+      rowComponent={TransactionRow}
+    />
   );
 }
