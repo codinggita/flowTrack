@@ -3,7 +3,9 @@
 
 > **One dashboard for all your money** — Unified tracking for bank accounts, UPI activity, cards, and subscriptions in a high-fidelity, professional interface.
 
-**🌐 Live Platform:** [https://flow-track-tawny.vercel.app](https://flow-track-tawny.vercel.app)
+**🌐 Live Platform:** [https://flow-track-full-stack.vercel.app](https://flow-track-full-stack.vercel.app)
+
+**🌐 Docs link**: https://documenter.getpostman.com/view/50840877/2sBXqKnewR
 
 ---
 

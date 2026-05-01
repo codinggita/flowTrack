@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 
-const BASE_URL = 'https://flow-track-tawny.vercel.app';
+const BASE_URL = 'https://flow-track-full-stack.vercel.app';
 const DEFAULT_IMG = `${BASE_URL}/og-image.png`;
 
 const PAGE_META = {

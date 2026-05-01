@@ -279,7 +279,7 @@ export default function TermsOfService() {
           }}>
             <p style={{ margin: '0 0 6px' }}>📧 swaraj.prajapati.cg@gmail.com</p>
             <p style={{ margin: '0 0 6px' }}>📱 +91 9229095823</p>
-            <p style={{ margin: '0 0 6px' }}>🌐 https://flow-track-tawny.vercel.app/legal</p>
+            <p style={{ margin: '0 0 6px' }}>🌐 https://flow-track-full-stack.vercel.app/legal</p>
             <p style={{ margin: 0, color: '#85948c', fontSize: 12 }}>
               Response time: Within 72 hours on business days
             </p>
