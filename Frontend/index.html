@@ -2,14 +2,31 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>FlowTrack – Indian Finance Dashboard</title>
-    <meta name="description" content="FlowTrack – Manage your Indian finances, track expenses, and monitor cash flow effortlessly." />
-    <!-- Google Fonts – Manrope + Inter -->
+
+    <!-- Primary Meta -->
+    <title>FlowTrack — Personal Finance Tracker for India</title>
+    <meta name="description" content="FlowTrack is a free personal finance app for India. Track expenses, UPI, bank accounts and subscriptions." />
+    <meta name="theme-color" content="#42e5b0" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.json" />
+
+    <!-- Fonts — preload for performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="preload" as="style"
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" />
+    <link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" />
+
+    <!-- Open Graph fallback -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="FlowTrack — Personal Finance for India" />
+    <meta property="og:description" content="Free personal finance tracker. Manage expenses, UPI, bank accounts and subscriptions." />
+    <meta property="og:image" content="https://flowtrack.in/og-image.png" />
   </head>
   <body>
     <div id="root"></div>

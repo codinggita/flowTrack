@@ -1,0 +1,17 @@
+User-agent: *
+Allow: /
+Allow: /login
+Allow: /register
+Allow: /terms
+Allow: /privacy
+Allow: /support
+
+Disallow: /dashboard
+Disallow: /transactions
+Disallow: /accounts
+Disallow: /reports
+Disallow: /recurring
+Disallow: /settings
+Disallow: /api/
+
+Sitemap: https://flowtrack.in/sitemap.xml
