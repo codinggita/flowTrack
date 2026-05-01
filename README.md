@@ -40,6 +40,17 @@ The application adheres to a strict **"Triple-Black" tonal design aesthetic**, p
 - **Legal Compliance**: Built-in Privacy Policy, Terms of Service, and a GDPR/DPDP Act compliant Consent Management system.
 - **Notifications**: Real-time spending alerts and subscription reminders.
 
+### ⚡ Performance & SEO (New)
+- **Lazy Loading**: Route-based code splitting using `React.lazy` and `Suspense` for minimal initial bundle size.
+- **Virtualization**: Implemented `react-window` for the transactions table to maintain 60fps scrolling with large datasets.
+- **Advanced SEO**: Dynamic route-specific meta tags and Open Graph data using `react-helmet-async`.
+- **Structured Data**: Injected JSON-LD Schema.org data for WebApplication, Organization, and FAQ rich snippets.
+- **PWA & Discovery**: Auto-generated `sitemap.xml`, optimized `robots.txt`, and full PWA `manifest.json`.
+
+### 🌍 Localization & Theming (New)
+- **Bilingual Support**: Fully functional English and Hindi (हिंदी) translations across the entire application using Context API.
+- **Dynamic Theme System**: Real-time Light, Dark, and System (OS-level) theme toggling persisted via localStorage and backend syncing.
+
 ---
 
 ## 🛠️ Technology Stack
