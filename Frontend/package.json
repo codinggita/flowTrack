@@ -16,7 +16,10 @@
     "formik": "^2.4.9",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
+    "react-helmet-async": "^3.0.0",
     "react-router-dom": "^7.14.2",
+    "react-window": "^2.2.7",
+    "react-window-infinite-loader": "^2.0.1",
     "recharts": "^3.8.1",
     "yup": "^1.7.1"
   },
