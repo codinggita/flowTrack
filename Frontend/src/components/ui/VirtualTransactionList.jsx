@@ -1,5 +1,5 @@
 import { memo, useMemo } from 'react';
-import { FixedSizeList as List } from 'react-window';
+import { List } from 'react-window';
 
 const ROW_HEIGHT = 52;
 
