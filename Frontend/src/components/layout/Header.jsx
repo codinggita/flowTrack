@@ -1,6 +1,8 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
+import { useTheme } from '../../context/ThemeContext';
+import { useLanguage } from '../../context/LanguageContext';
 
 const routeNames = {
   '/dashboard': 'Dashboard',
@@ -17,6 +19,8 @@ export default function Header({ setMobileOpen }) {
   const { user } = useAuth();
   const [search, setSearch] = useState('');
   const currentRoute = routeNames[location.pathname] || 'Dashboard';
+  const { theme, changeTheme, resolvedTheme } = useTheme();
+  const { language, changeLanguage, t }       = useLanguage();
 
   return (
     <header
@@ -111,6 +115,53 @@ export default function Header({ setMobileOpen }) {
             <path d="M12.22 2h-.44a2 2 0 00-2 2v.18a2 2 0 01-1 1.73l-.43.25a2 2 0 01-2 0l-.15-.08a2 2 0 00-2.73.73l-.22.38a2 2 0 00.73 2.73l.15.1a2 2 0 011 1.72v.51a2 2 0 01-1 1.74l-.15.09a2 2 0 00-.73 2.73l.22.38a2 2 0 002.73.73l.15-.08a2 2 0 012 0l.43.25a2 2 0 011 1.73V20a2 2 0 002 2h.44a2 2 0 002-2v-.18a2 2 0 011-1.73l.43-.25a2 2 0 012 0l.15.08a2 2 0 002.73-.73l.22-.39a2 2 0 00-.73-2.73l-.15-.08a2 2 0 01-1-1.74v-.5a2 2 0 011-1.74l.15-.09a2 2 0 00.73-2.73l-.22-.38a2 2 0 00-2.73-.73l-.15.08a2 2 0 01-2 0l-.43-.25a2 2 0 01-1-1.73V4a2 2 0 00-2-2z" />
             <circle cx="12" cy="12" r="3" />
           </svg>
+        </button>
+
+        {/* Theme Toggle */}
+        <button
+          onClick={() => changeTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
+          title={resolvedTheme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+          style={{
+            background:   'none',
+            border:       '1px solid var(--border)',
+            borderRadius: 8,
+            width:        36,
+            height:       36,
+            display:      'flex',
+            alignItems:   'center',
+            justifyContent:'center',
+            cursor:       'pointer',
+            color:        'var(--muted)',
+            fontSize:     16,
+            transition:   'all 0.15s',
+          }}
+          onMouseOver={e => e.currentTarget.style.borderColor = 'var(--green)'}
+          onMouseOut={e  => e.currentTarget.style.borderColor = 'var(--border)'}
+        >
+          {resolvedTheme === 'dark' ? '☀️' : '🌙'}
+        </button>
+
+        {/* Language Toggle */}
+        <button
+          onClick={() => changeLanguage(language === 'en' ? 'hi' : 'en')}
+          title={language === 'en' ? 'Switch to Hindi' : 'Switch to English'}
+          style={{
+            background:   language === 'hi' ? 'rgba(66,229,176,0.1)' : 'none',
+            border:       '1px solid var(--border)',
+            borderRadius: 8,
+            height:       36,
+            padding:      '0 12px',
+            cursor:       'pointer',
+            color:        language === 'hi' ? 'var(--green)' : 'var(--muted)',
+            fontSize:     12,
+            fontWeight:   700,
+            transition:   'all 0.15s',
+            letterSpacing:'0.03em',
+          }}
+          onMouseOver={e => { e.currentTarget.style.borderColor='var(--green)'; e.currentTarget.style.color='var(--green)'; }}
+          onMouseOut={e  => { e.currentTarget.style.borderColor='var(--border)'; e.currentTarget.style.color=language==='hi'?'var(--green)':'var(--muted)'; }}
+        >
+          {language === 'en' ? 'हि' : 'EN'}
         </button>
 
         {/* Avatar with user initials */}

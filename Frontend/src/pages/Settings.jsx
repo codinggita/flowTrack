@@ -3,6 +3,8 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { api } from '../services/api';
 import { useAuth } from '../hooks/useAuth';
+import { useTheme } from '../context/ThemeContext';
+import { useLanguage } from '../context/LanguageContext';
 
 // ── Time formatter ──────────────────────────────────────────────────────
 const timeAgo = (date) => {
@@ -125,8 +127,9 @@ export default function Settings() {
     subRenewal:     true,
   });
 
-  // Theme state
-  const [theme, setTheme] = useState('dark');
+  // Theme state & language
+  const { theme, changeTheme } = useTheme();
+  const { language, changeLanguage, t } = useLanguage();
 
   const showToast = (msg, type = 'success') => {
     setToast({ msg, type });
@@ -264,15 +267,8 @@ export default function Settings() {
   };
 
   // ── Change theme ──────────────────────────────────────────────────────
-  const handleThemeChange = async (newTheme) => {
-    setTheme(newTheme);
-    try {
-      await api.updatePreferences({ theme: newTheme });
-      showToast('Theme preference saved');
-    } catch (err) {
-      showToast('Failed to save theme', 'error');
-    }
-  };
+  // Function logic moved directly to onClick because handleThemeChange was removed in step 13
+
 
   // ── Revoke session ────────────────────────────────────────────────────
   const handleRevokeSession = async (sessionId) => {
@@ -836,15 +832,19 @@ export default function Settings() {
           <Card>
             <SectionTitle>Interface Theme</SectionTitle>
             <div style={{ display:'flex', gap:8 }}>
-              {['dark','light','system'].map(t => (
-                <button key={t}
-                  onClick={() => handleThemeChange(t)}
-                  className={theme===t ? 'btn-primary' : 'btn-ghost'}
-                  style={{
-                    flex:1, height:44, fontSize:13, fontWeight:600,
-                    textTransform:'capitalize',
-                  }}>
-                  {t==='dark' ? '🌙' : t==='light' ? '☀️' : '💻'} {t.charAt(0).toUpperCase()+t.slice(1)}
+              {[
+                { key:'dark',   label: t('settings.preferences.dark'),   icon:'🌙' },
+                { key:'light',  label: t('settings.preferences.light'),  icon:'☀️' },
+                { key:'system', label: t('settings.preferences.system'), icon:'💻' },
+              ].map(opt => (
+                <button key={opt.key}
+                  onClick={() => {
+                    changeTheme(opt.key);
+                    api.updatePreferences({ theme: opt.key }).catch(console.error);
+                  }}
+                  className={theme === opt.key ? 'btn-primary' : 'btn-ghost'}
+                  style={{ flex:1, height:44, fontSize:13, fontWeight:600 }}>
+                  {opt.icon} {opt.label}
                 </button>
               ))}
             </div>
@@ -878,16 +878,13 @@ export default function Settings() {
               <div>
                 <FieldLabel>LANGUAGE</FieldLabel>
                 <select className="input-field"
-                  defaultValue="en-IN"
-                  onChange={async (e) => {
-                    try {
-                      await api.updatePreferences({ language: e.target.value });
-                      showToast('Language preference saved');
-                    } catch { showToast('Failed to save','error'); }
+                  value={language}
+                  onChange={e => {
+                    changeLanguage(e.target.value);
+                    api.updatePreferences({ language: e.target.value }).catch(console.error);
                   }}>
-                  <option value="en-IN">English (India)</option>
-                  <option value="en-US">English (US)</option>
-                  <option value="hi-IN">हिंदी</option>
+                  <option value="en">English (India)</option>
+                  <option value="hi">हिंदी (Hindi)</option>
                 </select>
               </div>
             </div>
