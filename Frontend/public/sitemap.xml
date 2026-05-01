@@ -2,67 +2,67 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://flowtrack.in/</loc>
+    <loc>https://flow-track-tawny.vercel.app/</loc>
     <lastmod>2024-01-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://flowtrack.in/login</loc>
+    <loc>https://flow-track-tawny.vercel.app/login</loc>
     <lastmod>2024-01-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://flowtrack.in/register</loc>
+    <loc>https://flow-track-tawny.vercel.app/register</loc>
     <lastmod>2024-01-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://flowtrack.in/terms</loc>
+    <loc>https://flow-track-tawny.vercel.app/terms</loc>
     <lastmod>2024-01-01</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
   </url>
   <url>
-    <loc>https://flowtrack.in/privacy</loc>
+    <loc>https://flow-track-tawny.vercel.app/privacy</loc>
     <lastmod>2024-01-01</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
   </url>
   <url>
-    <loc>https://flowtrack.in/dashboard</loc>
+    <loc>https://flow-track-tawny.vercel.app/dashboard</loc>
     <lastmod>2024-01-01</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://flowtrack.in/transactions</loc>
+    <loc>https://flow-track-tawny.vercel.app/transactions</loc>
     <lastmod>2024-01-01</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://flowtrack.in/accounts</loc>
+    <loc>https://flow-track-tawny.vercel.app/accounts</loc>
     <lastmod>2024-01-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://flowtrack.in/reports</loc>
+    <loc>https://flow-track-tawny.vercel.app/reports</loc>
     <lastmod>2024-01-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://flowtrack.in/recurring</loc>
+    <loc>https://flow-track-tawny.vercel.app/recurring</loc>
     <lastmod>2024-01-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://flowtrack.in/support</loc>
+    <loc>https://flow-track-tawny.vercel.app/support</loc>
     <lastmod>2024-01-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
