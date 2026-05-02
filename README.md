@@ -7,6 +7,10 @@
 
 **🌐 Docs link**: https://documenter.getpostman.com/view/50840877/2sBXqKnewR
 
+**🎨 Figma Design:** [View Design](https://www.figma.com/design/drhC7vDVlQUDH97dLY1XoT/Untitled?node-id=0-1&t=WgWrtiP1BsBb5MCV-1)
+
+**🎬 Figma Prototype:** [View Prototype](https://www.figma.com/proto/drhC7vDVlQUDH97dLY1XoT/Untitled?page-id=0%3A1&node-id=2-647&p=f&viewport=-209%2C146%2C0.11&t=yqpnivZQHzjixyvJ-1&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=2%3A348)
+
 ---
 
 ## 🔍 Overview
@@ -75,7 +79,22 @@ The application adheres to a strict **"Triple-Black" tonal design aesthetic**, p
 - MongoDB Atlas account or local MongoDB instance
 
 ### 2. Environment Setup
-Create a `.env` file in both `Backend` and `Frontend` directories based on the provided `.env.example` files.
+Create a `.env` file in both `Backend` and `Frontend` directories.
+
+**Backend `.env`:**
+```env
+PORT=5000
+MONGODB_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret
+EMAIL_USER=your_email@gmail.com
+EMAIL_PASS=your_app_password
+CLIENT_URL=http://localhost:5173
+```
+
+**Frontend `.env`:**
+```env
+VITE_API_URL=http://localhost:5000/api
+```
 
 ### 3. Installation
 ```bash
